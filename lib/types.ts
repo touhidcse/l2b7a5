@@ -45,27 +45,21 @@ export type IPost = {
 
 type IUser = {
     success: boolean,
+    statusCode: number,
     message: string,
     data: {
         profile: {
             id: string,
-            name: string,
             email: string,
-            activeStatus: string,
+            name: string,
             role: string,
-            createdAt: string,
-            updatedAt: string,
-            profile: {
-                id: string,
-                profilePhoto: string,
-                bio: string | null,
-                userId: string,
-                createdAt: string,
-                updatedAt: string
-            }
+            phone: string | null,
+            address: string | null,
+            isBan: boolean,
         }
     }
 }
+
 
 export type NavbarProps = {
     user: IUser
@@ -75,4 +69,28 @@ export type ISidebarItem = {
     label: string,
     href: string,
     icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>
+}
+
+export type IService = {
+    id: string,
+    title: string,
+    description: string,
+    categoryId: string,
+    technicianId: string,
+    price: number,
+    category: {
+        id: string,
+        type: string
+    },
+    technician: {
+        id: string,
+        location: string,
+        rating: number,
+        user: {
+            id: string,
+            name: string,
+            email: string,
+            phone: string
+        }
+    }
 }

@@ -11,7 +11,6 @@ import {
   SidebarMenuItem
 } from "@/components/ui/sidebar";
 import { ISidebarItem, NavbarProps } from "@/lib/types";
-import { Newspaper } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { sidebarMenuItems } from "../_config/dashboardSidebarItems";
@@ -19,14 +18,12 @@ import { sidebarMenuItems } from "../_config/dashboardSidebarItems";
 export default function DashboardSidebar({user} : NavbarProps) {
   const pathname = usePathname();
 
-  // const navItems = sidebarMenuItems.USER;
-
   let navItems : ISidebarItem[]  = [];
 
-  if(user.data.profile.role === "USER"){
-    navItems=sidebarMenuItems.USER
-  }else if (user.data.profile.role === "AUTHOR") {
-     navItems = sidebarMenuItems.AUTHOR;
+  if(user.data.profile.role === "CUSTOMER"){
+    navItems=sidebarMenuItems.CUSTOMER;
+  }else if (user.data.profile.role === "TECHNICIAN") {
+     navItems = sidebarMenuItems.TECHNICIAN;
   }else if (user.data.profile.role === "ADMIN") {
      navItems = sidebarMenuItems.ADMIN;
   }

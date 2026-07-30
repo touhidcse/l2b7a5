@@ -6,29 +6,27 @@ import React, { useActionState, useEffect } from 'react'
 import { loginAction } from '../_actions/authActions'
 import { toast } from 'sonner'
 import { useSearchParams } from 'next/navigation'
-// import { useRouter } from 'next/navigation'  // client side navigation
 
 const LoginForm = () => {
     const searchParams = useSearchParams()
     const redirectto = searchParams.get("redirectTo") ?? "";
     const [state, action, pending] =useActionState(loginAction.bind(null, redirectto),false)
 
-    
-    // const router = useRouter()
     console.log("state from login form",state);
     useEffect(()=>{
         if(!state) return;
 
         if(state.success){
             toast.success(state.message || "Logins Successfull")
-            // router.push("/dashboard")
         }
 
         if(!state.success){
             toast.error(state.message || "Login Failed")
         }
-        
-    },[state])
+
+    },[state]);
+    
+
   return (
     <form action={action} className='space-y-4'>
         <Card className='p-5 space-y-4'>

@@ -1,6 +1,5 @@
 import { Toaster } from "sonner";
 import "./globals.css";
-import { Navbar } from "@/components/shared/navbar";
 import { getMe } from "@/service/getMe";
 
 

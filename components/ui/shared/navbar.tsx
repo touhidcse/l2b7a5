@@ -17,6 +17,7 @@ import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 import { NavbarProps } from '@/lib/types'
 import { logout } from '@/service/logout'
+import { getMe } from '@/service/getMe'
 
 
 // Navigation items configuration
@@ -24,35 +25,32 @@ const navItems = [
     { label: 'Home', href: '/' },
     { label: 'About', href: '/about' },
     { label: 'Services', href: '/services' },
+    { label: 'Technicians', href: '/technicians' },
+    { label: 'Registration', href: '/registration' },
     { label: 'Contact', href: '/contact' },
-    { label: 'News', href: '/news' },
-    { label: 'Premium', href: '/premium' },
 ]
 
 // User dropdown menu items
 const userMenuItems = [
-    {label: 'Dashboard', icon: LayoutDashboard, action: 'dashboard'},
+    { label: 'Dashboard', icon: LayoutDashboard, action: 'dashboard' },
     { label: 'Profile', icon: User, action: 'profile' },
     { label: 'Settings', icon: Settings, action: 'settings' },
 ]
 
-
-
-
 export function Navbar({ user }: NavbarProps) {
 
-    console.log(user.success,"Success from Navbar");
+    console.log(user.success, "Success from Navbar");
     const router = useRouter()
 
     const handleUserMenuAction = async (action: string) => {
         console.log(`User clicked: ${action}`)
         // Add your action logic here
-        if(action === "dashboard"){
-            if(user.data.profile.role === "USER"){
-                router.push("/dashboard")   
-            } else if(user.data.profile.role === "AUTHOR"){
-                router.push("/author-dashboard")
-            } else if(user.data.profile.role === "ADMIN"){
+        if (action === "dashboard") {
+            if (user.data.profile.role === "CUSTOMER") {
+                router.push("/customer-dashboard")
+            } else if (user.data.profile.role === "TECHNICIAN") {
+                router.push("/technician-dashboard")
+            } else if (user.data.profile.role === "ADMIN") {
                 router.push("/admin-dashboard")
             }
             return;
@@ -62,6 +60,13 @@ export function Navbar({ user }: NavbarProps) {
             await logout();
             toast.success("User Logged out Successfully");
             router.push("/login")
+            return;
+        }
+        if (action === "profile") {
+            const user = await getMe();
+            console.log(user);
+            router.push("/profile");
+            return;
         }
     };
 
@@ -71,7 +76,7 @@ export function Navbar({ user }: NavbarProps) {
                 <div className="flex justify-between items-center h-16">
                     {/* Logo */}
                     <Link href="/" className="flex items-center gap-2">
-                        <span className="text-xl font-bold text-primary">NextJS Press</span>
+                        <span className="text-xl font-bold text-primary">Fix It Now</span>
                     </Link>
 
                     {/* Desktop Navigation Links */}

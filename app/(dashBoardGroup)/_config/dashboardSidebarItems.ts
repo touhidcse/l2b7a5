@@ -14,34 +14,34 @@ export const ADMIN_SIDEBAR_ITEMS: ISidebarItem[] = [
     },
 ]
 
-export const AUTHOR_SIDEBAR_ITEMS: ISidebarItem[] = [
+export const TECHNICIAN_SIDEBAR_ITEMS: ISidebarItem[] = [
     {
         label: "Dashboard",
-        href: "/author-dashboard",
+        href: "/technician-dashboard",
         icon: LayoutDashboard
     },
     {
         label: "My Posts",
-        href: "/author-dashboard/my-posts",
+        href: "/technician-dashboard/my-posts",
         icon: FileText
     },
 ]
 
-export const USER_SIDEBAR_ITEMS : ISidebarItem[] = [
+export const CUSTOMER_SIDEBAR_ITEMS : ISidebarItem[] = [
     {
         label : "Dashboard",
-        href : "/dashboard",
+        href : "/customer-dashboard",
         icon : LayoutDashboard
     },
     {
         label : "My Posts",
-        href : "/dashboard/my-posts",
+        href : "/customer-dashboard/my-posts",
         icon : FileText
     },
 ]
 
 export const sidebarMenuItems = {
-    USER : USER_SIDEBAR_ITEMS,
-    AUTHOR : AUTHOR_SIDEBAR_ITEMS,
+    CUSTOMER : CUSTOMER_SIDEBAR_ITEMS,
+    TECHNICIAN : TECHNICIAN_SIDEBAR_ITEMS,
     ADMIN : ADMIN_SIDEBAR_ITEMS
 }

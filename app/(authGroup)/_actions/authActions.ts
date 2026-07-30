@@ -55,15 +55,71 @@ export const loginAction = async (redirectTo : string,prevState: LoginState, for
         if(redirectTo && typeof redirectTo === "string" && redirectTo.startsWith("/") && !redirectTo.startsWith("//")){
             redirect(redirectTo)
         }
-        if (decodedToken.role === "USER") {
-            redirect("/dashboard")
+        if (decodedToken.role === "CUSTOMER") {
+            redirect("/customer-dashboard")
         } else if (decodedToken.role === "ADMIN") {
             redirect("/admin-dashboard")
-        } else if (decodedToken.role === "AUTHOR") {
-            redirect("/author-dashboard")
+        } else if (decodedToken.role === "TECHNICIAN") {
+            redirect("/technician-dashboard")
         }
 
     }
 
+    return result;
+}
+
+export const registerAction = async (redirectTo : string,prevState: LoginState, formdata: FormData) => {
+    console.log("formdata from authAction/registrationAction", formdata);
+    console.log("PrevState authActin/registrationAction", prevState); 
+    const name = formdata.get("name");
+    const email = formdata.get("email");
+    const password = formdata.get("password");
+    const role = formdata.get("role");
+    const payload = {
+        name,
+        email,
+        password,
+        role
+    }
+
+    const res = await fetch(`${process.env.BACKEND_API_URL}/api/users/register`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+    });
+
+    const result = await res.json();
+
+    if (result.success) {
+        const cookieStore = await cookies()
+
+        cookieStore.set("accessToken", result.data.accessToken, {
+            httpOnly: true,
+            maxAge: 60 * 60 * 24,
+            sameSite: "lax"
+        })
+        cookieStore.set("refreshToken", result.data.refreshToken, {
+            httpOnly: true,
+            maxAge: 60 * 60 * 24 * 7,
+            sameSite: "lax"
+        });
+
+        // Role base redirect
+        const decodedToken = jwt.decode(result.data.accessToken) as JwtPayload;
+        console.log("Decoded Token:", decodedToken);
+        if(redirectTo && typeof redirectTo === "string" && redirectTo.startsWith("/") && !redirectTo.startsWith("//")){
+            redirect(redirectTo)
+        }
+        if (decodedToken.role === "CUSTOMER") {
+            redirect("/customer-dashboard")
+        } else if (decodedToken.role === "ADMIN") {
+            redirect("/admin-dashboard")
+        } else if (decodedToken.role === "TECHNICIAN") {
+            redirect("/technician-dashboard")
+        }
+
+    }
     return result;
 }
