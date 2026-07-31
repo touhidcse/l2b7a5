@@ -1,7 +1,7 @@
-import RegisterForm from "../_components/RegisterForm";
+import RegistrationForm from "../_components/RegistrationForm";
 
 
-export default function RegisterPage() {
+export default function RegistrationPage() {
   return (
     <>
     <div className="flex min-h-screen items-center justify-center">
@@ -15,7 +15,7 @@ export default function RegisterPage() {
           </p>
         </div>
         {/* Form */}
-        <RegisterForm/>
+        <RegistrationForm/>
       </div>
     </div>
     </>

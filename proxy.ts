@@ -7,7 +7,7 @@ import { jwtutils } from './utils/jwt';
 import { getNewAccessToken } from './service/refreshToken';
 // import { getSubscriptionStatus } from './app/(publicGroup)/_actions/getSubscriptionStatus';
 
-const AUTH_ROUTES = ['/login', '/register'];
+const AUTH_ROUTES = ['/login', '/registration'];
 
 const PUBLIC_ROUTES = ['/', '/news']
 // This function can be marked `async` if using `await` inside

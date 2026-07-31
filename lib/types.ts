@@ -48,7 +48,6 @@ type IUser = {
     statusCode: number,
     message: string,
     data: {
-        profile: {
             id: string,
             email: string,
             name: string,
@@ -56,7 +55,6 @@ type IUser = {
             phone: string | null,
             address: string | null,
             isBan: boolean,
-        }
     }
 }
 

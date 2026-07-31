@@ -3,14 +3,14 @@
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import React, { useActionState, useEffect } from 'react'
-import { registerAction} from '../_actions/authActions'
+import {registrationAction} from '../_actions/authActions'
 import { toast } from 'sonner'
 import { useSearchParams } from 'next/navigation'
 
-const RegisterForm = () => {
+const RegistrationForm = () => {
     const searchParams = useSearchParams()
     const redirectto = searchParams.get("redirectTo") ?? "";
-    const [state, action, pending] =useActionState(registerAction.bind(null, redirectto),false)
+    const [state, action, pending] =useActionState(registrationAction.bind(null, redirectto),false)
 
     console.log("state from registration form",state);
     useEffect(()=>{
@@ -55,4 +55,4 @@ const RegisterForm = () => {
   )
 }
 
-export default RegisterForm
+export default RegistrationForm

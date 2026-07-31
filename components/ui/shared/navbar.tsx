@@ -46,11 +46,11 @@ export function Navbar({ user }: NavbarProps) {
         console.log(`User clicked: ${action}`)
         // Add your action logic here
         if (action === "dashboard") {
-            if (user.data.profile.role === "CUSTOMER") {
+            if (user.data.role === "CUSTOMER") {
                 router.push("/customer-dashboard")
-            } else if (user.data.profile.role === "TECHNICIAN") {
+            } else if (user.data.role === "TECHNICIAN") {
                 router.push("/technician-dashboard")
-            } else if (user.data.profile.role === "ADMIN") {
+            } else if (user.data.role === "ADMIN") {
                 router.push("/admin-dashboard")
             }
             return;
@@ -105,8 +105,8 @@ export function Navbar({ user }: NavbarProps) {
                                 <DropdownMenuContent align="end" className="w-48">
                                     <DropdownMenuLabel>
                                         <div className='flex flex-col gap 1'>
-                                            <p className='text-sm font-medium'>{user.data?.profile.name || "Name"}</p>
-                                            <p className='text-xs text-muted-foreground'>{user.data?.profile.email || "Email"}</p>
+                                            <p className='text-sm font-medium'>{user.data?.name || "Name"}</p>
+                                            <p className='text-xs text-muted-foreground'>{user.data?.email || "Email"}</p>
                                         </div>
                                     </DropdownMenuLabel>
                                     <DropdownMenuGroup>
