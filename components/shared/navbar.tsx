@@ -39,7 +39,7 @@ const userMenuItems = [
 
 export function Navbar({ user }: NavbarProps) {
 
-    console.log(user.success, "Success from Navbar");
+    console.log(user, "User Success from Navbar Top");
     const router = useRouter()
 
     const handleUserMenuAction = async (action: string) => {
@@ -64,7 +64,7 @@ export function Navbar({ user }: NavbarProps) {
         }
         if (action === "profile") {
             const user = await getMe();
-            console.log(user);
+            console.log(user,"From navbar profile");
             router.push("/profile");
             return;
         }
@@ -94,7 +94,7 @@ export function Navbar({ user }: NavbarProps) {
 
                     {/* User Dropdown */}
                     {
-                        user.success ? (
+                        user.data? (
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
                                     <div className='cursor-pointer'>

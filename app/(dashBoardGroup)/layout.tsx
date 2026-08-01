@@ -1,5 +1,5 @@
 
-import { Navbar } from '@/components/ui/shared/navbar';
+import { Navbar } from '@/components/shared/navbar';
 import { Sidebar, SidebarProvider } from '@/components/ui/sidebar';
 import { getMe } from '@/service/getMe';
 import React from 'react'

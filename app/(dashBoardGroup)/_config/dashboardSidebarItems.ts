@@ -12,6 +12,26 @@ export const ADMIN_SIDEBAR_ITEMS: ISidebarItem[] = [
         href : "/admin-dashboard/my-posts",
         icon : FileText
     },
+    {
+        label : "My Posts",
+        href : "/admin-dashboard/my-posts",
+        icon : FileText
+    },
+    {
+        label : "My Posts",
+        href : "/admin-dashboard/my-posts",
+        icon : FileText
+    },
+    {
+        label : "My Posts",
+        href : "/admin-dashboard/my-posts",
+        icon : FileText
+    },
+    {
+        label : "My Posts",
+        href : "/admin-dashboard/my-posts",
+        icon : FileText
+    },
 ]
 
 export const TECHNICIAN_SIDEBAR_ITEMS: ISidebarItem[] = [
@@ -34,10 +54,30 @@ export const CUSTOMER_SIDEBAR_ITEMS : ISidebarItem[] = [
         icon : LayoutDashboard
     },
     {
-        label : "My Posts",
-        href : "/customer-dashboard/my-posts",
+        label : "Create Booking",
+        href : "/customer-dashboard/create-booking",
         icon : FileText
     },
+    {
+        label : "All bookings",
+        href : "/customer-dashboard/all-bookings",
+        icon : FileText
+    },
+    {
+        label : "Get Booking Details with Id",
+        href : "/customer-dashboard/booking-details",
+        icon : FileText
+    },
+    {
+        label : "Cancel Booking with id",
+        href : "/customer-dashboard/cancel-booking",
+        icon : FileText
+    },
+    {
+        label : "Give Review By Booking Id",
+        href : "/customer-dashboard/give-review",
+        icon : FileText
+    }
 ]
 
 export const sidebarMenuItems = {

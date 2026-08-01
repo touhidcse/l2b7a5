@@ -1,25 +1,23 @@
 "use server"
 
+import { IUser } from "@/lib/types";
 import { cookies } from "next/headers"
 
-export const getMe = async () =>{
+export const getMe = async ()=>{
     const cookieStore = await cookies()
 
     const accessToken = cookieStore.get("accessToken")?.value || null;
 
     if(!accessToken){
-        // throw new Error("User not logged in")
         return{
             success:false,
-            message: "User not logged in"
+            message: "User not logged in",
         }
+    
     }
     
     const res = await fetch(`${process.env.BACKEND_API_URL}/api/users/me`,{
         headers:{
-            // Authorization: accessToken as unknown as string
-            // Authorization: `${accessToken}`,
-            // Authorization: `Bearer ${accessToken}`
 
             Cookie: `accessToken=${accessToken}`
         },
@@ -27,11 +25,43 @@ export const getMe = async () =>{
         cache: "force-cache",
         next:{
             revalidate: 60*60*24,
-            tags: ["my-profile"]
+            tags: ["profile"]
         }
     })
 
     const result = await res.json()
     console.log("Result from getMe:", result);
+    // return result.data as IUser;
     return result;
+  
 }
+
+
+// export const getMe = async (): Promise<IUser | null> => {
+
+//     const cookieStore = await cookies()
+
+//     const accessToken = cookieStore.get("accessToken")?.value
+
+//     if(!accessToken){
+//         return;
+//     }
+
+//     const res = await fetch(
+//         `${process.env.BACKEND_API_URL}/api/users/me`,
+//         {
+//             headers:{
+//                 Authorization:`Bearer ${accessToken}`
+//             },
+//             cache:"no-store"
+//         }
+//     )
+
+//     if(!res.ok){
+//         return null;
+//     }
+
+//     const result= await res.json();
+
+//     return result;
+// }

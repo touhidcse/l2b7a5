@@ -3,14 +3,7 @@
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { BookOpen, CreditCard, Star, AlertCircle } from 'lucide-react'
-
-interface SectionProps {
-  title: string
-  icon: React.ReactNode
-  count: number
-  children?: React.ReactNode
-  isEmpty?: boolean
-}
+import { BookingItemProps, IBooking, NavbarProps, PaymentItemProps, ReviewItemProps, SectionProps } from '@/lib/types'
 
 export function ProfileSection({
   title,
@@ -47,52 +40,43 @@ export function ProfileSection({
   )
 }
 
-interface BookingItemProps {
-  id: string
-  serviceName?: string
-  date?: string
-  status?: string
-}
 
-export function BookingItem({ id, serviceName, date, status }: BookingItemProps) {
+export function BookingItem({ booking}: BookingItemProps) {
   return (
     <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800 rounded-lg mb-2 last:mb-0">
       <div className="flex-1">
+        {/* <p className="font-large text-slate-900 dark:text-white">
+          {serviceCategory || `Booking #${id.slice(0, 8)}`}
+        </p> */}
         <p className="font-medium text-slate-900 dark:text-white">
-          {serviceName || `Booking #${id.slice(0, 8)}`}
+          {booking.status|| `Booking #${booking.slice(0, 8)}`}
         </p>
-        {date && (
+        {booking.bookingDate && (
           <p className="text-xs text-slate-500 dark:text-slate-400">
-            {new Date(date).toLocaleDateString()}
+            {new Date(booking.bookingDate).toLocaleDateString()}
           </p>
         )}
       </div>
-      {status && (
+      {booking.status && (
         <Badge
           variant={
-            status === 'completed'
+            booking.status === 'completed'
               ? 'default'
-              : status === 'pending'
+              : booking.status === 'pending'
                 ? 'secondary'
                 : 'destructive'
           }
           className="text-xs"
         >
-          {status}
+          {booking.status}
         </Badge>
       )}
     </div>
   )
 }
 
-interface PaymentItemProps {
-  id: string
-  amount?: number
-  date?: string
-  method?: string
-}
 
-export function PaymentItem({ id, amount, date, method }: PaymentItemProps) {
+export function PaymentItem({ id, price, date, method }: PaymentItemProps) {
   return (
     <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800 rounded-lg mb-2 last:mb-0">
       <div className="flex-1">
@@ -105,29 +89,21 @@ export function PaymentItem({ id, amount, date, method }: PaymentItemProps) {
           </p>
         )}
       </div>
-      {amount && (
+      {price && (
         <Badge variant="outline" className="font-semibold">
-          ${amount.toFixed(2)}
+          ${price.toFixed(2)}
         </Badge>
       )}
     </div>
   )
 }
 
-interface ReviewItemProps {
-  id: string
-  title?: string
-  rating?: number
-  date?: string
-  comment?: string
-}
-
-export function ReviewItem({ id, title, rating, date, comment }: ReviewItemProps) {
+export function ReviewItem({ id, rating, date, comment }: ReviewItemProps) {
   return (
     <div className="p-3 bg-slate-50 dark:bg-slate-800 rounded-lg mb-2 last:mb-0">
       <div className="flex items-start justify-between mb-2">
         <p className="font-medium text-slate-900 dark:text-white">
-          {title || 'Review'}
+          {'Review'}
         </p>
         {rating && (
           <div className="flex gap-1">
