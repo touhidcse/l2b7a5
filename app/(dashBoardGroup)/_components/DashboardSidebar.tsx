@@ -20,11 +20,11 @@ export default function DashboardSidebar({user} : NavbarProps) {
 
   let navItems : ISidebarItem[]  = [];
 
-  if(user.data.role === "CUSTOMER"){
+  if(user?.data.role === "CUSTOMER"){
     navItems=sidebarMenuItems.CUSTOMER;
-  }else if (user.data.role === "TECHNICIAN") {
+  }else if (user?.data.role === "TECHNICIAN") {
      navItems = sidebarMenuItems.TECHNICIAN;
-  }else if (user.data.role === "ADMIN") {
+  }else if (user?.data.role === "ADMIN") {
      navItems = sidebarMenuItems.ADMIN;
   }
 

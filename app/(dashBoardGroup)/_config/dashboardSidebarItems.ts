@@ -8,28 +8,28 @@ export const ADMIN_SIDEBAR_ITEMS: ISidebarItem[] = [
         icon : LayoutDashboard
     },
     {
-        label : "My Posts",
-        href : "/admin-dashboard/my-posts",
+        label : "Create New Catagories",
+        href : "/admin-dashb/create-category",
         icon : FileText
     },
     {
-        label : "My Posts",
-        href : "/admin-dashboard/my-posts",
+        label : "All Categories",
+        href : "/admin-dashboard/all-categories",
         icon : FileText
     },
     {
-        label : "My Posts",
-        href : "/admin-dashboard/my-posts",
+        label : "All Users",
+        href : "/admin-dashboard/all-users",
+        icon : FileText 
+    },
+    {
+        label : "Update User Status",
+        href : "/admin-dashboard/update-user-status",
         icon : FileText
     },
     {
-        label : "My Posts",
-        href : "/admin-dashboard/my-posts",
-        icon : FileText
-    },
-    {
-        label : "My Posts",
-        href : "/admin-dashboard/my-posts",
+        label : "All Bookings",
+        href : "/admin-dashboard/all-bookings",
         icon : FileText
     },
 ]
@@ -41,10 +41,37 @@ export const TECHNICIAN_SIDEBAR_ITEMS: ISidebarItem[] = [
         icon: LayoutDashboard
     },
     {
-        label: "My Posts",
-        href: "/technician-dashboard/my-posts",
+        label: "Update Technician Profile",
+        href: "/technician-dashboard/update-profile",
         icon: FileText
     },
+    {
+        label: "Create Availabilities",
+        href: "/technician-dashboard/create-availabilities",
+        icon: FileText
+    },
+    {
+        label: "Get Own Availabilities",
+        href: "/technician-dashboard/get-availabilities",
+        icon: FileText
+    },
+    {
+        label: "Update Availabilities",
+        href: "/technician-dashboard/update-availabilities",
+        icon: FileText
+    },
+    {
+        label: "Get Technician Own Bookings",
+        href: "/technician-dashboard/get-bookings",
+        icon: FileText
+    },
+    {
+        label: "Update Booking Status by Booking Id",
+        href: "/technician-dashboard/update-booking-status",
+        icon: FileText
+    },
+    
+
 ]
 
 export const CUSTOMER_SIDEBAR_ITEMS : ISidebarItem[] = [
@@ -52,6 +79,11 @@ export const CUSTOMER_SIDEBAR_ITEMS : ISidebarItem[] = [
         label : "Dashboard",
         href : "/customer-dashboard",
         icon : LayoutDashboard
+    },
+    {
+        label : "Update Profile",
+        href : "/customer-dashboard/update-profile",
+        icon : FileText
     },
     {
         label : "Create Booking",
@@ -77,7 +109,17 @@ export const CUSTOMER_SIDEBAR_ITEMS : ISidebarItem[] = [
         label : "Give Review By Booking Id",
         href : "/customer-dashboard/give-review",
         icon : FileText
-    }
+    },
+    {
+        label : "Get Payment Details By Payment Id",
+        href : "/customer-dashboard/payment-details",
+        icon : FileText
+    },
+    {
+        label : "Get Payment History",
+        href : "/customer-dashboard/payment-history",
+        icon : FileText
+    },
 ]
 
 export const sidebarMenuItems = {

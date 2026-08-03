@@ -1,8 +1,9 @@
+import Page from '@/app/(publicGroup)/profile/page'
 import React from 'react'
 
 const CustomerPage = () => {
   return (
-    <div>CustomerPage</div>
+    <div><Page/></div>
   )
 }
 

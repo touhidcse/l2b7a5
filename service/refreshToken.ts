@@ -22,7 +22,7 @@ export const getNewAccessToken = async () => {
             Cookie: `refreshToken=${refreshToken}`
         },
 
-        cache: "no-cache",
+        cache: "no-store",
     })
 
     const result = await res.json()

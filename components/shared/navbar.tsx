@@ -46,11 +46,11 @@ export function Navbar({ user }: NavbarProps) {
         console.log(`User clicked: ${action}`)
         // Add your action logic here
         if (action === "dashboard") {
-            if (user.data.role === "CUSTOMER") {
+            if (user?.data.role === "CUSTOMER") {
                 router.push("/customer-dashboard")
-            } else if (user.data.role === "TECHNICIAN") {
+            } else if (user?.data.role === "TECHNICIAN") {
                 router.push("/technician-dashboard")
-            } else if (user.data.role === "ADMIN") {
+            } else if (user?.data.role === "ADMIN") {
                 router.push("/admin-dashboard")
             }
             return;
@@ -94,7 +94,7 @@ export function Navbar({ user }: NavbarProps) {
 
                     {/* User Dropdown */}
                     {
-                        user.data? (
+                        user?.data? (
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
                                     <div className='cursor-pointer'>

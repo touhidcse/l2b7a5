@@ -21,12 +21,13 @@ export const getMe = async ()=>{
 
             Cookie: `accessToken=${accessToken}`
         },
+        cache: "no-store"
 
-        cache: "force-cache",
-        next:{
-            revalidate: 60*60*24,
-            tags: ["profile"]
-        }
+        // cache: "force-cache",
+        // next:{
+        //     revalidate: 60*60*24,
+        //     tags: ["profile"]
+        // }
     })
 
     const result = await res.json()
@@ -35,33 +36,3 @@ export const getMe = async ()=>{
     return result;
   
 }
-
-
-// export const getMe = async (): Promise<IUser | null> => {
-
-//     const cookieStore = await cookies()
-
-//     const accessToken = cookieStore.get("accessToken")?.value
-
-//     if(!accessToken){
-//         return;
-//     }
-
-//     const res = await fetch(
-//         `${process.env.BACKEND_API_URL}/api/users/me`,
-//         {
-//             headers:{
-//                 Authorization:`Bearer ${accessToken}`
-//             },
-//             cache:"no-store"
-//         }
-//     )
-
-//     if(!res.ok){
-//         return null;
-//     }
-
-//     const result= await res.json();
-
-//     return result;
-// }

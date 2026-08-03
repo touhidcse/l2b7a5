@@ -15,6 +15,7 @@ export default function LoginPage() {
         </div>
         {/* Form */}
         <LoginForm/>
+        {/* <BugReportForm/> */}
       </div>
     </div>
     </>

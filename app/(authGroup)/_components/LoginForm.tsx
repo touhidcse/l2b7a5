@@ -1,45 +1,188 @@
 "use client"
 
-import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
-import React, { useActionState, useEffect } from 'react'
-import { loginAction } from '../_actions/authActions'
-import { toast } from 'sonner'
-import { useSearchParams } from 'next/navigation'
 
-const LoginForm = () => {
-    const searchParams = useSearchParams()
-    const redirectto = searchParams.get("redirectTo") ?? "";
-    const [state, action, pending] =useActionState(loginAction.bind(null, redirectto),false)
+import { useTransition } from "react";
+import { useSearchParams } from "next/navigation";
+import { toast } from "sonner";
 
-    console.log("state from login form",state);
-    useEffect(()=>{
-        if(!state) return;
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-        if(state.success){
-            toast.success(state.message || "Logins Successfull")
-        }
 
-        if(!state.success){
-            toast.error(state.message || "Login Failed")
-        }
+import { loginSchema, LoginFormData } from "@/lib/validations/auth";
 
-    },[state]);
-    
+import { loginAction } from "../_actions/authActions";
 
-  return (
-    <form action={action} className='space-y-4'>
-        <Card className='p-5 space-y-4'>
-            <input name="email" type='email' placeholder='Enter your Email'  required/>
-            <input name="password" type="password" placeholder='Enter your Password' required />
-            <Button type='submit'>
-                {
-                    pending? "Submitting..." : "Login"
-                }
-            </Button>
-        </Card>
-    </form>
-  )
+
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+
+
+
+const LoginForm =()=>{
+
+
+const searchParams = useSearchParams();
+
+const redirectTo =
+searchParams.get("redirectTo") ?? "";
+
+
+
+const [isPending,startTransition] = useTransition();
+
+
+
+const {
+ register,
+ handleSubmit,
+ formState:{
+    errors
+ }
+}=useForm<LoginFormData>({
+
+ resolver:zodResolver(loginSchema),
+
+ defaultValues:{
+    email:"",
+    password:""
+ }
+
+});
+
+
+
+
+
+const onSubmit=(data:LoginFormData)=>{
+
+
+ const formData = new FormData();
+
+
+ formData.append(
+    "email",
+    data.email
+ );
+
+
+ formData.append(
+    "password",
+    data.password
+ );
+
+
+
+ startTransition(async()=>{
+
+
+    const result =
+    await loginAction(
+        redirectTo,
+        formData
+    );
+
+
+    if(!result.success){
+
+        toast.error(
+            result.message || "Login failed"
+        );
+
+    }
+
+
+ });
+
+
 }
 
-export default LoginForm
+
+
+return (
+
+<form
+onSubmit={handleSubmit(onSubmit)}
+className="space-y-4"
+>
+
+
+<Card className="p-5 space-y-4">
+
+
+
+<input
+
+{...register("email")}
+
+type="email"
+
+placeholder="Enter your Email"
+
+className="border p-2 rounded w-full"
+
+/>
+
+
+{
+errors.email &&
+<p className="text-red-500 text-sm">
+{errors.email.message}
+</p>
+}
+
+
+
+
+<input
+
+{...register("password")}
+
+type="password"
+
+placeholder="Enter your Password"
+
+className="border p-2 rounded w-full"
+
+/>
+
+
+{
+errors.password &&
+<p className="text-red-500 text-sm">
+{errors.password.message}
+</p>
+}
+
+
+
+
+<Button
+disabled={isPending}
+type="submit"
+>
+
+{
+isPending
+?
+"Submitting..."
+:
+"Login"
+}
+
+
+</Button>
+
+
+
+</Card>
+
+
+</form>
+
+)
+
+}
+
+
+export default LoginForm;

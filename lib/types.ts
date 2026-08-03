@@ -1,6 +1,143 @@
 import { LucideProps } from "lucide-react";
 import { ForwardRefExoticComponent, RefAttributes } from "react";
 
+// ==================== Error Types ====================
+
+export interface ApiError {
+    success: false;
+    statusCode: number;
+    message: string;
+    errorDetails?: {
+        code?: string;
+        field?: string;
+        errors?: Array<{ field: string; message: string }>;
+        details?: Record<string, unknown>;
+    };
+}
+
+export interface ActionError {
+    success: boolean;
+    message: string;
+    errors?: Record<string, string[]>;
+    data?: unknown;
+}
+
+export type UnknownError = Error | ApiError | { message: string; statusCode?: number; code?: string };
+
+// ==================== Component Props ===============
+
+
+export type BookingItemFullProps = {
+    booking: IBooking;
+};
+
+
+
+
+
+
+
+
+// ==================== API Response Types ====================
+
+export interface IApiResponse<T = unknown> {
+    success: boolean;
+    statusCode: number;
+    message: string;
+    data?: T;
+    meta?: {
+        page: number;
+        limit: number;
+        total: number;
+        totalPages: number;
+    };
+}
+
+export interface IAuthResponse {
+    accessToken: string;
+    refreshToken: string;
+}
+
+// ==================== Booking Types ====================
+
+export type BookingStatus = 
+    | "REQUESTED"
+    | "ACCEPTED"
+    | "DECLINED"
+    | "PAID"
+    | "CANCELLED"
+    | "IN_PROGRESS"
+    | "COMPLETED";
+
+
+
+export interface ITechnicianProfile {
+    id: string;
+    userId: string;
+    rating: number;
+    bio: string | null;
+    experience: number;
+    profilePhoto: string | null;
+    location: string | null;
+    availability: IAvailability;
+    bookings: IBooking[];
+    reviews: IReview[];
+    services: IService[];
+    user: {
+        id: string;
+        name: string;
+        email: string;
+        phone: string | null;
+        address: string | null;
+    };
+}
+
+// ==================== Payment Types ====================
+
+export type PaymentStatus = "PENDING" | "COMPLETED" | "FAILED" | "REFUNDED";
+export type PaymentMethod = "STRIPE" | "SSLCOMMERZ";
+
+
+
+// ==================== Dashboard Types ====================
+
+export interface IDashboardStats {
+    totalBookings: number;
+    pendingBookings: number;
+    acceptedBookings: number;
+    inProgressBookings: number;
+    completedBookings: number;
+    cancelledBookings: number;
+    totalSpent?: number;
+    totalEarnings?: number;
+    completionRate?: number;
+}
+
+export interface IAdminStats {
+    totalUsers: number;
+    totalTechnicians: number;
+    totalCustomers: number;
+    totalBookings: number;
+    pendingBookings: number;
+    completedBookings: number;
+    totalRevenue: number;
+}
+
+// ==================== Helper Types ====================
+
+export type ActionState = {
+    success: boolean;
+    message: string;
+    errors?: Record<string, string[]>;
+    data?: unknown;
+};
+
+export type ServerActionResponse = {
+    success: boolean;
+    message: string;
+    data?: unknown;
+};
+
 
 export type NavbarProps = {
     user: IUser;
@@ -23,11 +160,6 @@ export type SectionProps = {
 };
 
 export type BookingItemProps = {
-    // id: string
-    // // serviceCategory: string
-    // serviceName: string
-    // date: string
-    // status: string
     booking: IBooking
 };
 
@@ -54,116 +186,6 @@ export type ReviewItemProps = {
     comment: string
 };
 
-
-
-
-// export type IUser = {
-//     data: {
-//         id: string;
-//         email: string;
-//         name: string;
-//         role: "CUSTOMER" | "TECHNICIAN" | "ADMIN";
-//         createdAt: string,
-//         updatedAt: string,
-//         phone: string | null;
-//         address: string | null;
-//         isBan: boolean;
-//         bookings: IBooking[];
-//         payments: IPayment[];
-//         reviews: IReview[];
-//         technicianProfile: ITechnician
-//     }
-// };
-
-// export type IUser = {
-//     success: boolean;
-//     statusCode: number;
-//     message: string;
-//     data: {
-//         Id: string;
-//         email: string;
-//         name: string;
-//         role: "CUSTOMER" | "TECHNICIAN" | "ADMIN";
-//         phone: string | null;
-//         address: string | null;
-//         createdAt: string;
-//         updatedAt: string;
-//         isBan: boolean;
-//         bookings:
-//         {
-//             id: string,
-//             customerId: string,
-//             technicianId: string,
-//             serviceId: string,
-//             price: number,
-//             status: "REQUESTED" | "ACCEPTED" | "DECLINED" | "PAID" | "CANCELLED" | "IN_PROGRESS" | "COMPLETED",
-//             bookingDate: string,
-//             startAt: string,
-//             endAt: string,
-//             cancelAt: string,
-//             cancelReason: string,
-//             service: {
-//                 id: string,
-//                 title: string,
-//                 description: string,
-//                 categoryId: string,
-//                 technicianId: string,
-//                 price: number,
-//             },
-//             technician: {
-//                 id: string,
-//                 userId: string,
-//                 rating: number,
-//                 bio: string,
-//                 experience: number,
-//                 profilePhoto: string,
-//                 location: string,
-//             },
-//             payment: {
-//                 id: string,
-//                 bookingId: string,
-//                 price: number,
-//                 method: string,
-//                 stripeCustomerId: string,
-//                 stripePaymentId: string,
-//                 status: "PENDING" | "COMPLETED" | "FAILED" | "REFUNDED",
-//                 paidAt: string,
-//                 cancelAt: string,
-//                 cancelReason: string,
-//                 customerId: string,
-
-//             },
-//             review: {
-//                 id: string,
-//                 bookingId: string,
-//                 customerId: string,
-//                 technicianId: string,
-//                 rating: number,
-//                 comment: string,
-//                 reviewDate: string,
-//             };
-
-
-//         }[];
-
-//     }
-// }
-
-
-
-// export type ITechnician = {
-//     id: string,
-//     location: string,
-//     rating: number,
-//     user: {
-//         id: string,
-//         name: string,
-//         email: string,
-//         phone: string
-//     },
-//     availability: IAvailability
-// };
-
 export type IAvailability = [
     {
         id: string,
@@ -174,58 +196,6 @@ export type IAvailability = [
         isAvailable: boolean
     }
 ]
-
-// export type ICategory = {
-//     id: string,
-//     type: string
-// };
-
-// export type IService = {
-//     id: string,
-//     title: string,
-//     description: string,
-//     categoryId: string,
-//     technicianId: string,
-//     price: number,
-//     category: ICategory,
-//     technician: ITechnician
-// }
-
-
-
-// export type IBooking = {
-//     id: string;
-//     customerId: string;
-//     technicianId: string;
-//     serviceId: string;
-//     price: number;
-//     status: "REQUESTED" | "ACCEPTED" | "DECLINED" | "PAID" | "CANCELLED" | "IN_PROGRESS" | "COMPLETED";
-//     bookingDate: string;
-//     startAt: string;
-//     endAt: string;
-
-//     service: IService;
-//     payment: IPayment;
-//     review: IReview;
-// }
-
-// export type IPayment = {
-//     id: string;
-//     bookingId: string;
-//     price: number;
-//     method: string;
-//     status: "PENDING" | "COMPLETED" | "FAILED" | "REFUNDED";
-//     paidAt: string;
-// }
-
-// export type IReview = {
-//     id: string;
-//     bookingId: string;
-//     technicianId: string;
-//     rating: number;
-//     comment: string;
-//     reviewDate: string;
-// }
 
 export type IUser = {
   success: boolean;
@@ -256,9 +226,7 @@ export type IBooking = {
   customerId: string;
   technicianId: string;
   serviceId: string;
-
   price: number;
-
   status:
     | "REQUESTED"
     | "ACCEPTED"
@@ -268,7 +236,6 @@ export type IBooking = {
     | "IN_PROGRESS"
     | "COMPLETED";
 
-
   bookingDate: string;
 
   startAt: string;
@@ -277,15 +244,11 @@ export type IBooking = {
   cancelAt: string | null;
   cancelReason: string | null;
 
-
   service: IService;
-
 
   technician: ITechnician;
 
-
   payment: IPayment | null;
-
 
   review: IReview | null;
 
