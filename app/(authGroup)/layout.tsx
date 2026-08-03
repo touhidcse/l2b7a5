@@ -1,6 +1,7 @@
 import { Navbar } from '@/components/shared/navbar';
 import { getMe } from '@/service/getMe';
 import React from 'react'
+import { Toaster } from 'sonner';
 
 const AuthGroupLayout = async(
     {
@@ -15,6 +16,7 @@ const AuthGroupLayout = async(
     <div className='maw-w-7xl mx-auto'>
       <Navbar user={user}/>
     {children}
+    <Toaster richColors position="top-right" />
     </div>
   )
 }

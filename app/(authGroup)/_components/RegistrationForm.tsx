@@ -2,145 +2,90 @@
 
 
 import { useTransition } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
-
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
-
-import { registrationSchema, RegistrationFormData }
-    from "@/lib/validations/auth";
-
-
-import { registrationAction }
-    from "../_actions/authActions";
-
-
+import { registrationSchema, RegistrationFormData } from "@/lib/validations/auth";
+import { registrationAction } from "../_actions/authActions";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
 
-
-
 const RegistrationForm = () => {
-
-
+    const router = useRouter();
     const searchParams = useSearchParams();
 
-    const redirectTo =
-        searchParams.get("redirectTo") ?? "";
+    const redirectTo = searchParams.get("redirectTo") ?? "";
 
+    const [isPending, startTransition] = useTransition();
 
+    
 
-    const [isPending, startTransition]
-        =
-        useTransition();
-
-
-
-    const {
-        register,
-        handleSubmit,
-        watch,
-        formState: {
-            errors
-        }
-    }
-        =
-        useForm<RegistrationFormData>({
+    const { register,handleSubmit, watch, formState: { errors}} = useForm<RegistrationFormData>({
 
             resolver: zodResolver(registrationSchema),
 
-            defaultValues: {
-
-                name: "",
-                email: "",
-                password: "",
-                confirmPassword: "",
-                role: "CUSTOMER"
-
-            }
+            defaultValues: { name: "",  email: "", password: "", confirmPassword: "", role: "CUSTOMER"}
 
         });
-
-
-
 
 
     const onSubmit = (data: RegistrationFormData) => {
 
 
-        const formData = new FormData();
+    const formData = new FormData();
 
 
-        formData.append(
-            "name",
-            data.name
-        );
+    formData.append("name", data.name);
+    formData.append("email", data.email);
+    formData.append("password", data.password);
+    formData.append("role", data.role);
 
 
-        formData.append(
-            "email",
-            data.email
-        );
+
+    startTransition(async()=>{
 
 
-        formData.append(
-            "password",
-            data.password
-        );
-
-
-        formData.append(
-            "role",
-            data.role
+        const result = await registrationAction(
+            redirectTo,
+            formData
         );
 
 
 
-        startTransition(async () => {
+        if(!result.success){
 
+            toast.error(
+                result.message || "Registration failed"
+            );
 
-            const result =
-                await registrationAction(
-                    redirectTo,
-                    formData
-                );
+            return;
 
-
-
-            if (!result.success) {
-
-                toast.error(
-                    result.message
-                );
-
-            }
-
-
-        });
-
-
-    }
+        }
 
 
 
+        toast.success(
+            "Registration Successful"
+        );
+
+
+
+        router.push(result.redirectTo ?? "/");
+
+        router.refresh();
+
+
+
+    });
+
+};
 
     return (
-
-
-        <form
-            onSubmit={
-                handleSubmit(onSubmit)
-            }
-            className="space-y-4"
-        >
-
+        <form onSubmit={ handleSubmit(onSubmit)} className="space-y-4" >
 
             <Card className="p-5 space-y-4">
-
 
                 <input
 
@@ -149,20 +94,10 @@ const RegistrationForm = () => {
                     placeholder="Enter your Name"
 
                     className="border p-2 rounded w-full"
-
                 />
-
-
                 {
-                    errors.name &&
-                    <p className="text-red-500 text-sm">
-                        {errors.name.message}
-                    </p>
+                    errors.name && <p className="text-red-500 text-sm"> {errors.name.message}</p>
                 }
-
-
-
-
 
                 <input
 
@@ -173,21 +108,11 @@ const RegistrationForm = () => {
                     placeholder="Enter your Email"
 
                     className="border p-2 rounded w-full"
-
                 />
 
-
                 {
-                    errors.email &&
-                    <p className="text-red-500 text-sm">
-                        {errors.email.message}
-                    </p>
+                    errors.email && <p className="text-red-500 text-sm"> {errors.email.message}</p>
                 }
-
-
-
-
-
 
                 <input
 
@@ -201,19 +126,9 @@ const RegistrationForm = () => {
 
                 />
 
-
                 {
-                    errors.password &&
-                    <p className="text-red-500 text-sm">
-                        {errors.password.message}
-                    </p>
+                    errors.password && <p className="text-red-500 text-sm"> {errors.password.message} </p>
                 }
-
-
-
-
-
-
 
                 <input
 
@@ -224,100 +139,47 @@ const RegistrationForm = () => {
                     placeholder="Confirm Password"
 
                     className="border p-2 rounded w-full"
-
                 />
-
-
                 {
-                    errors.confirmPassword &&
-                    <p className="text-red-500 text-sm">
-                        {errors.confirmPassword.message}
-                    </p>
+                    errors.confirmPassword && <p className="text-red-500 text-sm"> {errors.confirmPassword.message} </p>
                 }
-
-
-
-
-
 
                 <div className="flex gap-5">
 
-
                     <label>
-
                         <input
-
                             {...register("role")}
 
                             type="radio"
 
                             value="CUSTOMER"
-
                         />
-
                         Customer
-
                     </label>
-
-
 
                     <label>
-
                         <input
-
                             {...register("role")}
-
                             type="radio"
-
                             value="TECHNICIAN"
-
                         />
-
                         Technician
-
                     </label>
-
-
                 </div>
-
-
                 {
-                    errors.role &&
-                    <p className="text-red-500 text-sm">
-                        {errors.role.message}
-                    </p>
+                    errors.role && <p className="text-red-500 text-sm"> {errors.role.message} </p>
                 }
 
-
-
-
-
-                <Button
-                    disabled={isPending}
-                    type="submit"
-                >
-
+                <Button disabled={isPending} type="submit">
                     {
-                        isPending
-                            ?
-                            "Creating..."
-                            :
-                            "Register"
+                        isPending ? "Creating..." : "Register"
                     }
-
 
                 </Button>
 
-
-
             </Card>
-
-
         </form>
-
     )
-
 }
-
 
 export default RegistrationForm;

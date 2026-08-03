@@ -7,18 +7,12 @@ export const loginSchema = z.object({
         .string()
         .email("Invalid email address"),
 
-
     password: z
         .string()
         .min(6, "Password must be at least 6 characters")
-
 })
 
-
-export type LoginFormData =
-    z.infer<typeof loginSchema>
-
-
+export type LoginFormData = z.infer<typeof loginSchema>
 
 
 
@@ -38,18 +32,10 @@ export const registrationSchema = z.object({
         .string()
         .min(6, "Password must be at least 6 characters"),
 
-
-
     confirmPassword: z
         .string(),
 
-
-
-    role: z.enum([
-        "CUSTOMER",
-        "TECHNICIAN"
-    ])
-
+    role: z.enum(["CUSTOMER", "TECHNICIAN"])
 })
     .refine(
         (data) => data.password === data.confirmPassword,
@@ -60,6 +46,4 @@ export const registrationSchema = z.object({
     );
 
 
-
-export type RegistrationFormData =
-    z.infer<typeof registrationSchema>;
+export type RegistrationFormData = z.infer<typeof registrationSchema>;
