@@ -12,7 +12,6 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { DropdownMenuLabel } from 'radix-ui/dropdown-menu'
-import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 import { NavbarProps } from '@/lib/types'

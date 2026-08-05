@@ -22,7 +22,7 @@ const RegistrationForm = () => {
 
     
 
-    const { register,handleSubmit, watch, formState: { errors}} = useForm<RegistrationFormData>({
+    const { register,handleSubmit, formState: { errors}} = useForm<RegistrationFormData>({
 
             resolver: zodResolver(registrationSchema),
 
