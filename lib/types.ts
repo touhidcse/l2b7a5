@@ -23,9 +23,28 @@ export type SectionProps = {
 export type TechnicianProfileProps ={
     technician: ITechnician
 }
+
+export interface TechnicianProfileUpdateFormProps {
+    initialData: {
+        bio: string | null;
+        experience: number;
+        profilePhoto: string | null;
+        location: string | null;
+    };
+    onSubmit: (data: {
+        bio: string;
+        experience: number;
+        profilePhoto: string;
+        location: string;
+    }) => void;
+};
+
+
 export type BookingItemProps = {
     booking: IBooking
 };
+
+// id, serviceCategory, serviceName, date, status }: BookingItemProps
 
 export type PaymentItemProps = {
     id: string
@@ -43,11 +62,6 @@ export type ReviewItemProps = {
 
 
 export type IUser = {
-    success: boolean;
-    statusCode: number;
-    message: string;
-
-    data: {
         id: string;
         email: string;
         name: string;
@@ -60,51 +74,45 @@ export type IUser = {
         bookings: IBooking[];
         payments: IPayment[];
         reviews: IReview[];
-        technicianProfile?: ITechnicianProfile | null;
-    };
+        technicianProfile?: ITechnician | null;
 };
 
-export type ITechnicianProfile = {
+// ==================== Technician Types ====================
 
+export interface ITechnician {
     id: string;
-
     userId: string;
-
     rating: number;
-
-    bio: string | null;
-
+    bio: string;
     experience: number;
-
-    profilePhoto: string | null;
-
-    location: string | null;
-
-
-    availability: IAvailability[];
-
-    bookings: IBooking[];
-
-    reviews: IReview[];
-
-    services: IService[];
-
-
-    // added from backend mapping
-    totalReviews?: number;
-
-    completedJobs?: number;
-
-
+    profilePhoto: string;
+    location: string;
     user: {
         id: string;
-        name: string;
         email: string;
+        name: string;
+        role: 'CUSTOMER' | 'TECHNICIAN' | 'ADMIN';
         phone: string | null;
         address: string | null;
+        createdAt: string;
+        updatedAt: string;
+        isBan: boolean;
+        bookings: IBooking[];
+        payments: IPayment[];
+        reviews: IReview[];
+        technicianProfile?: ITechnician | null;
     };
-
-};
+    bookings?: IBooking[];
+    services?: IService[];
+    reviews?: IReviewTechnician[];
+    availability?: IAvailability[];
+    _count?: {
+        bookings: number;
+        reviews: number;
+    };
+    totalReviews?: number;
+    completedJobs?: number;
+}
 
 export type IAvailability = {
 
@@ -129,6 +137,15 @@ export type IAvailability = {
 
 };
 
+// ==================== Category Types ====================
+
+export interface ICategory {
+    id: string;
+    type: string;
+    createdAt?: string;
+    updatedAt?: string;
+    services?: IService[];
+}
 
 export type IService = {
 
@@ -154,112 +171,15 @@ export type IService = {
 
 };
 
-// export type IBooking = {
-//     id: string;
-//     customerId: string;
-//     technicianId: string;
-//     serviceId: string;
-//     price: number;
-//     status: | "REQUESTED" | "ACCEPTED" | "DECLINED" | "PAID" | "CANCELLED" | "IN_PROGRESS" | "COMPLETED";
-
-//     bookingDate: string;
-
-//     startAt: string;
-//     endAt: string;
-
-//     cancelAt: string | null;
-//     cancelReason: string | null;
-
-//     service: IService;
-
-//     technician: ITechnician;
-
-//     payment: IPayment | null;
-
-//     review: IReview | null;
-
-// };
-
-
-// export type IPayment = {
-
-//     id: string;
-
-//     bookingId: string;
-
-//     price: number;
-
-//     method: string;
-
-//     status: | "PENDING" | "COMPLETED" | "FAILED" | "REFUNDED";
-
-//     paidAt: string | null;
-
-// };
-
-
-
-export type IReview = {
-
-    id: string;
-
-    bookingId: string;
-
-    customerId: string;
-
-    technicianId: string;
-
-    rating: number;
-
-    comment: string;
-
-    reviewDate: string;
-
-};
-
-export type IReviewTechnician = {
-
-    id: string;
-
-    rating: number;
-
-    comment: string;
-
-    reviewDate: string;
-
-
-    customer: {
-        id: string;
-        name: string;
-    };
-
-};
-
-
-
-
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-export interface IUserResponse {
-    success: boolean;
-    statusCode: number;
-    message: string;
-    data: IUser;
+// ==================== Booking Types ====================
+export interface CreateBookingPayload {
+  technicianId: string;
+  serviceId: string;
+  startAt: string;
+  endAt: string;
 }
 
-// ==================== Booking Types ====================
-
-export type BookingStatus =
-    | 'REQUESTED'
-    | 'ACCEPTED'
-    | 'DECLINED'
-    | 'PAID'
-    | 'CANCELLED'
-    | 'IN_PROGRESS'
-    | 'COMPLETED';
+export type BookingStatus =| 'REQUESTED' | 'ACCEPTED' | 'DECLINED' | 'PAID' | 'CANCELLED' | 'IN_PROGRESS' | 'COMPLETED';
 
 export interface IBooking {
     id: string;
@@ -309,48 +229,7 @@ export interface IBooking {
     };
     payment: IPayment | null;
     review: IReview | null;
-}
-
-
-
-// ==================== Category Types ====================
-
-export interface ICategory {
-    id: string;
-    type: string;
-    createdAt?: string;
-    updatedAt?: string;
-    services?: IService[];
-}
-
-// ==================== Technician Types ====================
-
-export interface ITechnician {
-    id: string;
-    userId: string;
-    rating: number;
-    bio: string;
-    experience: number;
-    profilePhoto: string;
-    location: string;
-    user: {
-        id: string;
-        name: string;
-        email: string;
-        phone: string | null;
-        address?: string | null;
-    };
-    services?: IService[];
-    reviews?: IReview[];
-    availability?: IAvailability[];
-    _count?: {
-        bookings: number;
-        reviews: number;
-    };
-    totalReviews?: number;
-    completedJobs?: number;
-}
-
+};
 
 // ==================== Payment Types ====================
 
@@ -384,8 +263,67 @@ export interface IPayment {
             };
         };
     };
-}
+};
 
+export type IReview = {
+
+    id: string;
+
+    bookingId: string;
+
+    customerId: string;
+
+    technicianId: string;
+
+    rating: number;
+
+    comment: string;
+
+    reviewDate: string;
+
+};
+
+export type ReviewItemPropsTechninican={
+    review: IReviewTechnician;
+}
+export type IReviewTechnician = {
+
+    id: string;
+
+    rating: number;
+
+    comment: string;
+
+    reviewDate: string;
+
+
+    customer: {
+        id: string;
+        name: string;
+    };
+    totalReviews: number,
+    totalCompletedJobs: number,
+
+};
+
+// ==================== Status Badge Colors ====================
+
+export const STATUS_COLORS: Record<BookingStatus, string> = {
+    'REQUESTED': 'bg-yellow-500/15 text-yellow-700 dark:text-yellow-400 border-yellow-500/30',
+    'ACCEPTED': 'bg-blue-500/15 text-blue-700 dark:text-blue-400 border-blue-500/30',
+    'DECLINED': 'bg-red-500/15 text-red-700 dark:text-red-400 border-red-500/30',
+    'PAID': 'bg-purple-500/15 text-purple-700 dark:text-purple-400 border-purple-500/30',
+    'CANCELLED': 'bg-red-700/15 text-red-800 dark:text-red-500 border-red-700/30',
+    'IN_PROGRESS': 'bg-green-500/15 text-green-700 dark:text-green-400 border-green-500/30',
+    'COMPLETED': 'bg-gray-500/15 text-gray-700 dark:text-gray-400 border-gray-500/30',
+};
+
+export const PAYMENT_STATUS_COLORS: Record<PaymentStatus, string> = {
+    'PENDING': 'bg-yellow-500/15 text-yellow-700 dark:text-yellow-400',
+    'COMPLETED': 'bg-green-500/15 text-green-700 dark:text-green-400',
+    'FAILED': 'bg-red-500/15 text-red-700 dark:text-red-400',
+    'REFUNDED': 'bg-gray-500/15 text-gray-700 dark:text-gray-400',
+};
 
 // ==================== Dashboard Types ====================
 export interface IDashboardStats {
@@ -429,7 +367,7 @@ export interface TechnicianBookingTableProps {
 }
 
 export interface UserTableProps {
-    users: IUser['data'][];                                   
+    users: IUser[][];                                   
     onUpdateStatus: (userId: string, isBan: boolean) => void;
 }
 
@@ -443,37 +381,3 @@ export interface AvailabilityFormProps {
     initialAvailabilities?: IAvailability[];
     onSubmit: (availabilities: IAvailability[]) => void;
 }
-
-export interface TechnicianProfileFormProps {
-    initialData: {
-        bio: string | null;
-        experience: number;
-        profilePhoto: string | null;
-        location: string | null;
-    };
-    onSubmit: (data: {
-        bio: string;
-        experience: number;
-        profilePhoto: string;
-        location: string;
-    }) => void;
-}
-
-// ==================== Status Badge Colors ====================
-
-export const STATUS_COLORS: Record<BookingStatus, string> = {
-    'REQUESTED': 'bg-yellow-500/15 text-yellow-700 dark:text-yellow-400 border-yellow-500/30',
-    'ACCEPTED': 'bg-blue-500/15 text-blue-700 dark:text-blue-400 border-blue-500/30',
-    'DECLINED': 'bg-red-500/15 text-red-700 dark:text-red-400 border-red-500/30',
-    'PAID': 'bg-purple-500/15 text-purple-700 dark:text-purple-400 border-purple-500/30',
-    'CANCELLED': 'bg-red-700/15 text-red-800 dark:text-red-500 border-red-700/30',
-    'IN_PROGRESS': 'bg-green-500/15 text-green-700 dark:text-green-400 border-green-500/30',
-    'COMPLETED': 'bg-gray-500/15 text-gray-700 dark:text-gray-400 border-gray-500/30',
-};
-
-export const PAYMENT_STATUS_COLORS: Record<PaymentStatus, string> = {
-    'PENDING': 'bg-yellow-500/15 text-yellow-700 dark:text-yellow-400',
-    'COMPLETED': 'bg-green-500/15 text-green-700 dark:text-green-400',
-    'FAILED': 'bg-red-500/15 text-red-700 dark:text-red-400',
-    'REFUNDED': 'bg-gray-500/15 text-gray-700 dark:text-gray-400',
-};

@@ -32,7 +32,7 @@ export const getMe = async ()=>{
 
     const result = await res.json()
     console.log("Result from getMe:", result);
-    // return result.data as IUser;
-    return result;
+    return result.data as IUser;
+    // return result;
   
 }

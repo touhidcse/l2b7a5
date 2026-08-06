@@ -13,7 +13,7 @@ export default async function Page() {
     const result = await getMe();
     const user = result as IUser;
 
-    const bookings = user.data.bookings || [];
+    const bookings = user.bookings || [];
 
     const payments = bookings
         .filter((booking) => booking.payment !== null)

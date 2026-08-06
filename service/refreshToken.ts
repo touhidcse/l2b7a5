@@ -2,6 +2,7 @@
 import { jwtutils } from "@/utils/jwt";
 import { cookies } from "next/headers"
 
+// Create new refresh token
 export const getNewAccessToken = async () => {
     const cookieStore = await cookies()
 
@@ -30,6 +31,7 @@ export const getNewAccessToken = async () => {
     return result;
 }
 
+// Create new accessToken, if refreshToken valid
 
 export const isAccessTokenExist = async () => {
 

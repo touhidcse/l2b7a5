@@ -11,13 +11,17 @@ type ServiceCardProps = {
 
 export function ServiceCard({ service }: ServiceCardProps) {
   const bookingCount = service._count?.bookings ?? service.bookings?.length ?? 0;
-
+  const imageUrl =
+    service.technician.profilePhoto?.startsWith("http://") ||
+      service.technician.profilePhoto?.startsWith("https://")
+      ? service.technician.profilePhoto
+      : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMUYc4wJBplhHqgn45lCzs1dBf27EoL69wD_XOmp3w1p7KE12_LKqtv5vB&s=10";
   return (
     <Card className="gap-4">
       {service.technician.profilePhoto && (
         <Image
           loading="lazy"
-          src={service.technician.profilePhoto}
+          src={imageUrl}
           unoptimized
           alt={service.technician.user.name}
           width={400}

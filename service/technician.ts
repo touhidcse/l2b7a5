@@ -16,7 +16,7 @@ export const getTechnicianProfileWithReviews= async (id:string)=>{
     
     // }
     
-    const res = await fetch(`${process.env.BACKEND_API_URL}/api/technician/:id`,{
+    const res = await fetch(`${process.env.BACKEND_API_URL}/api/technicians/${id}`,{
         // headers:{
 
         //     Cookie: `accessToken=${accessToken}`

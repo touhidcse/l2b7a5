@@ -40,41 +40,6 @@ export function ProfileSection({
     )
 }
 
-// ✅ Option 1: BookingItem with individual props (for other uses)
-export function BookingItem({ id, serviceCategory, serviceName, date, status }: BookingItemProps) {
-    const getStatusVariant = (status: string): 'default' | 'secondary' | 'destructive' | 'outline' => {
-        const normalizedStatus = status?.toLowerCase() || '';
-        if (normalizedStatus === 'completed') return 'default';
-        if (normalizedStatus === 'pending' || normalizedStatus === 'requested') return 'secondary';
-        if (normalizedStatus === 'cancelled' || normalizedStatus === 'declined') return 'destructive';
-        return 'outline';
-    };
-
-    return (
-        <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800 rounded-lg mb-2 last:mb-0">
-            <div className="flex-1">
-                <p className="font-medium text-slate-900 dark:text-white">
-                    {serviceCategory || serviceName || `Booking #${id.slice(0, 8)}`}
-                </p>
-                {date && (
-                    <p className="text-xs text-slate-500 dark:text-slate-400">
-                        {new Date(date).toLocaleDateString()}
-                    </p>
-                )}
-            </div>
-            {status && (
-                <Badge
-                    variant={getStatusVariant(status)}
-                    className="text-xs capitalize"
-                >
-                    {status.toLowerCase()}
-                </Badge>
-            )}
-        </div>
-    )
-}
-
-// ✅ Option 2: BookingItemFull that accepts full booking object (for your profile page)
 export function BookingItemFull({ booking }: { booking: IBooking }) {
     const getStatusVariant = (status: IBooking['status']): 'default' | 'secondary' | 'destructive' | 'outline' => {
         const variants: Record<IBooking['status'], 'default' | 'secondary' | 'destructive' | 'outline'> = {
