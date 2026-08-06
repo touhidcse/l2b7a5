@@ -53,3 +53,39 @@ export const createBooking = async ({
 
     return result;
 };
+
+
+export const getCustomerBookings = async () => {
+    const cookieStore = await cookies();
+
+    const accessToken = cookieStore.get("accessToken")?.value;
+
+    if (!accessToken) {
+        return {
+            success: false,
+            message: "Please login first",
+            data: []
+        };
+    }
+
+    const res = await fetch(
+        `${process.env.BACKEND_API_URL}/api/bookings`,
+        {
+            headers: {
+                Cookie: `accessToken=${accessToken}`
+            },
+            cache: "no-store"
+        }
+    );
+
+
+    const result = await res.json();
+
+    console.log("Booking API:", result);
+    // or
+    console.log("Result data 0",JSON.stringify(result.data[0], null, 2));
+
+    return result;
+
+
+};
