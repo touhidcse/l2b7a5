@@ -1,5 +1,6 @@
 
 import { Navbar } from '@/components/shared/navbar';
+import { IUser } from '@/lib/types';
 import { getMe } from '@/service/getMe'
 import React from 'react'
 
@@ -10,7 +11,7 @@ const PublicGroupLayout = async (
         children: React.ReactNode
     }
 ) => {
-    const user = await getMe();
+    const user = await getMe() as IUser;
     return (
         
         <div>

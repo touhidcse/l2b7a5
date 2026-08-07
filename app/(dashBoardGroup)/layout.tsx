@@ -4,6 +4,7 @@ import { Sidebar, SidebarProvider } from '@/components/ui/sidebar';
 import { getMe } from '@/service/getMe';
 import React from 'react'
 import DashboardSidebar from './_components/DashboardSidebar';
+import { IUser } from '@/lib/types';
 const DashboardLayout = async (
   {
     children
@@ -11,7 +12,7 @@ const DashboardLayout = async (
     children: React.ReactNode
   }
 ) => {
-  const user = await getMe();
+  const user = await getMe() as IUser;
   return (
 
     <div className="min-h-screen flex flex-col">

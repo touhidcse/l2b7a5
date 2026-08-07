@@ -33,7 +33,7 @@ const navItems = [
 const userMenuItems = [
     { label: 'Dashboard', icon: LayoutDashboard, action: 'dashboard' },
     { label: 'Profile', icon: User, action: 'profile' },
-    { label: 'Settings', icon: Settings, action: 'settings' },
+    // { label: 'Settings', icon: Settings, action: 'settings' },
 ]
 
 export function Navbar({ user }: NavbarProps) {
@@ -93,7 +93,7 @@ export function Navbar({ user }: NavbarProps) {
 
                     {/* User Dropdown */}
                     {
-                        user? (
+                        user.role? (
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
                                     <div className='cursor-pointer'>

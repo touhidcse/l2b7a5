@@ -81,9 +81,7 @@ export const getCustomerBookings = async () => {
 
     const result = await res.json();
 
-    console.log("Booking API:", result);
-    // or
-    console.log("Result data 0",JSON.stringify(result.data[0], null, 2));
+    console.log("Booking API GetcustomerBooking from booking.ts:", result);
 
     return result;
 

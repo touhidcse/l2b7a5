@@ -28,12 +28,12 @@ export default function CustomerDashboardLayout({
             >
               Payments
             </Link>
-            <Link
+            {/* <Link
               href="/customer-dashboard/reviews"
               className="rounded-md px-4 py-2 text-slate-700 hover:bg-white hover:text-slate-900 transition-colors"
             >
               Reviews
-            </Link>
+            </Link> */}
           </nav>
         </header>
 

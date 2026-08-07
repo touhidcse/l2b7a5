@@ -5,6 +5,7 @@ import Link from "next/link";
 import { getCustomerBookings } from "@/service/booking";
 import { BookingStatus, IBooking } from "@/lib/types";
 import { createPaymentSession } from "@/service/payment";
+import { toast } from "sonner";
 
 export default function BookingHistoryPage() {
   const [bookings, setBookings] = useState<IBooking[]>([]);
@@ -58,31 +59,6 @@ export default function BookingHistoryPage() {
     fetchBookings();
   };
 
-  // const handlePayNow = async (bookingId: string) => {
-  //   try {
-  //     setProcessingPaymentId(bookingId);
-
-  //     const res = await createPaymentSession(bookingId);
-
-  //     if (!res.success) {
-  //       throw new Error(res.message || "Failed to start payment session.");
-  //     }
-
-  //     const checkoutUrl = res.url || res.data?.checkoutUrl || res.data?.url;
-
-  //     if (checkoutUrl) {
-  //       window.location.assign(checkoutUrl);
-  //     } else {
-  //       throw new Error("No payment URL was returned by the server.");
-  //     }
-  //   } catch (err: unknown) {
-  //     const errorMessage =
-  //       err instanceof Error ? err.message : "Failed to start payment.";
-  //     alert(errorMessage);
-  //   } finally {
-  //     setProcessingPaymentId(null);
-  //   }
-  // };
 
 const handlePayNow = async (bookingId: string) => {
   setProcessingPaymentId(bookingId);
@@ -92,7 +68,7 @@ const handlePayNow = async (bookingId: string) => {
 
   // If execution reaches here, it means no redirect occurred (e.g. backend error)
   if (res && !res.success) {
-    alert(res.message || "Failed to start payment session.");
+    toast.error("Payment session not created");
     setProcessingPaymentId(null);
   }
 };
