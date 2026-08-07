@@ -180,6 +180,8 @@ export interface CreateBookingPayload {
 }
 
 export type BookingStatus =| 'REQUESTED' | 'ACCEPTED' | 'DECLINED' | 'PAID' | 'CANCELLED' | 'IN_PROGRESS' | 'COMPLETED';
+export type PaymentStatus = 'PENDING' | 'COMPLETED' | 'FAILED' | 'REFUNDED';
+export type PaymentMethod = 'STRIPE' | 'SSLCOMMERZ';
 
 export interface IBooking {
     id: string;
@@ -233,8 +235,7 @@ export interface IBooking {
 
 // ==================== Payment Types ====================
 
-export type PaymentStatus = 'PENDING' | 'COMPLETED' | 'FAILED' | 'REFUNDED';
-export type PaymentMethod = 'STRIPE' | 'SSLCOMMERZ';
+
 
 export interface IPayment {
     id: string;

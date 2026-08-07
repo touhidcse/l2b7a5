@@ -8,12 +8,13 @@ import { createPaymentSession } from "@/service/payment";
 
 export default function BookingHistoryPage() {
   const [bookings, setBookings] = useState<IBooking[]>([]);
-  // Default loading to true so we don't call setLoading(true) synchronously in useEffect
+  // Default to true so no synchronous setLoading(true) is needed during initial mount
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [processingPaymentId, setProcessingPaymentId] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
-  // Pure async fetcher with NO synchronous state setters at entry
+  // Pure async fetcher with NO synchronous state setters at the top
   const fetchBookings = useCallback(async () => {
     try {
       const result = await getCustomerBookings();
@@ -22,7 +23,6 @@ export default function BookingHistoryPage() {
         throw new Error(result.message || "Failed to load bookings");
       }
 
-      // Flexibly handle array or nested object payload
       const dataList = Array.isArray(result)
         ? result
         : result.data || result.bookings || [];
@@ -36,75 +36,67 @@ export default function BookingHistoryPage() {
     }
   }, []);
 
-  // Effect handles fetching with cleanup guard to prevent memory leaks
+  // Fetch on mount safely
   useEffect(() => {
-    let isMounted = true;
+    let ignore = false;
 
-    async function loadInitialData() {
-      try {
-        const result = await getCustomerBookings();
-
-        if (!isMounted) return;
-
-        if (!result.success) {
-          throw new Error(result.message || "Failed to load bookings");
-        }
-
-        const dataList = Array.isArray(result)
-          ? result
-          : result.data || result.bookings || [];
-
-        setBookings(dataList);
-        setError(null);
-      } catch (err: unknown) {
-        if (isMounted) {
-          setError(err instanceof Error ? err.message : "Something went wrong.");
-        }
-      } finally {
-        if (isMounted) {
-          setLoading(false);
-        }
-      }
+    async function loadData() {
+      await fetchBookings();
     }
 
-    loadInitialData();
+    loadData();
 
     return () => {
-      isMounted = false;
+      ignore = true;
     };
-  }, []);
+  }, [fetchBookings]);
 
-  // Event handler triggers retry (safe to update loading state directly in event handlers)
+  // Retry handler (safe to update loading state here because it's triggered by a user event)
   const handleRetry = () => {
     setLoading(true);
     setError(null);
     fetchBookings();
   };
 
- const handlePayNow = async (bookingId: string) => {
-  try {
-    // 1. Call server action
-    const res = await createPaymentSession(bookingId);
+  // const handlePayNow = async (bookingId: string) => {
+  //   try {
+  //     setProcessingPaymentId(bookingId);
 
-    // 2. Check returned object properties directly
-    if (!res.success && res.message) {
-      throw new Error(res.message);
-    }
+  //     const res = await createPaymentSession(bookingId);
 
-    // 3. Flexibly extract Stripe checkout URL
-    const checkoutUrl = res.url || res.data?.url;
+  //     if (!res.success) {
+  //       throw new Error(res.message || "Failed to start payment session.");
+  //     }
 
-    if (checkoutUrl) {
-      window.location.assign(checkoutUrl);
-    } else {
-      throw new Error("No payment URL was returned by the server.");
-    }
-  } catch (err: unknown) {
-    const errorMessage =
-      err instanceof Error ? err.message : "Failed to start payment.";
-    alert(errorMessage);
+  //     const checkoutUrl = res.url || res.data?.checkoutUrl || res.data?.url;
+
+  //     if (checkoutUrl) {
+  //       window.location.assign(checkoutUrl);
+  //     } else {
+  //       throw new Error("No payment URL was returned by the server.");
+  //     }
+  //   } catch (err: unknown) {
+  //     const errorMessage =
+  //       err instanceof Error ? err.message : "Failed to start payment.";
+  //     alert(errorMessage);
+  //   } finally {
+  //     setProcessingPaymentId(null);
+  //   }
+  // };
+
+const handlePayNow = async (bookingId: string) => {
+  setProcessingPaymentId(bookingId);
+
+  // Directly call the server action; redirect() will execute cleanly
+  const res = await createPaymentSession(bookingId);
+
+  // If execution reaches here, it means no redirect occurred (e.g. backend error)
+  if (res && !res.success) {
+    alert(res.message || "Failed to start payment session.");
+    setProcessingPaymentId(null);
   }
 };
+  
 
   const handleCancelBooking = async (bookingId: string) => {
     if (!confirm("Are you sure you want to cancel this booking?")) return;
@@ -147,9 +139,8 @@ export default function BookingHistoryPage() {
 
     return (
       <span
-        className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold ${
-          styles[status] || "bg-gray-100 text-gray-800 border-gray-300"
-        }`}
+        className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold ${styles[status] || "bg-gray-100 text-gray-800 border-gray-300"
+          }`}
       >
         {status ? status.replace("_", " ") : "UNKNOWN"}
       </span>
@@ -194,8 +185,17 @@ export default function BookingHistoryPage() {
         </div>
       ) : (
         bookings.map((booking) => {
+          const canPay =
+            booking.status === "ACCEPTED" &&
+            (!booking.payment || booking.payment.status === "PENDING");
+
           const canCancel =
             booking.status === "REQUESTED" || booking.status === "PAID";
+
+          const hasReview = Boolean(booking.review);
+          const canReview = booking.status === "COMPLETED" && !hasReview;
+
+          const isPayingThis = processingPaymentId === booking.id;
 
           return (
             <div
@@ -215,21 +215,20 @@ export default function BookingHistoryPage() {
                     {booking.technician?.user?.name || "N/A"}
                   </span>
                 </p>
-                <p className="text-xs text-slate-500">
-                  📅 {booking.startAt}{" "}
-                </p>
+                <p className="text-xs text-slate-500">📅 {booking.startAt}</p>
                 <p className="text-base font-bold text-slate-900">
                   ${booking.price?.toFixed(2) ?? "0.00"}
                 </p>
               </div>
 
               <div className="flex flex-wrap items-center gap-3">
-                {booking.status === "ACCEPTED" && (
+                {canPay && (
                   <button
+                    disabled={isPayingThis}
                     onClick={() => handlePayNow(booking.id)}
-                    className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-emerald-700 transition-colors"
+                    className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-emerald-700 disabled:opacity-50"
                   >
-                    Pay Now
+                    {isPayingThis ? "Redirecting..." : "Pay Now"}
                   </button>
                 )}
 
@@ -237,17 +236,16 @@ export default function BookingHistoryPage() {
                   <button
                     disabled={isPending}
                     onClick={() => handleCancelBooking(booking.id)}
-                    className="rounded-lg bg-rose-50 border border-rose-200 px-4 py-2 text-sm font-semibold text-rose-700 hover:bg-rose-100 disabled:opacity-50 transition-colors"
+                    className="rounded-lg border border-rose-200 bg-rose-50 px-4 py-2 text-sm font-semibold text-rose-700 transition-colors hover:bg-rose-100 disabled:opacity-50"
                   >
                     Cancel Booking
                   </button>
                 )}
 
-                {booking.status === "COMPLETED" && (
+                {canReview && (
                   <Link
-                    // href={`/customer-dashboard/reviews/${booking.id}`}
                     href={`/customer-dashboard/reviews/${booking.id}`}
-                    className="rounded-lg bg-blue-50 border border-blue-200 px-4 py-2 text-sm font-semibold text-blue-700 hover:bg-blue-100 transition-colors"
+                    className="rounded-lg border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-700 transition-colors hover:bg-blue-100"
                   >
                     Leave Review
                   </Link>

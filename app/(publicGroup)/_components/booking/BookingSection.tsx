@@ -185,14 +185,6 @@ export default function BookingSection({
 
         } catch (err) {
             console.error("Booking error:", err);
-
-            // if (err instanceof TypeError && err.message === "Failed to fetch") {
-            //     setError("Unable to connect to the server. Please check your internet connection.");
-            // } else if (err instanceof Error) {
-            //     setError(err.message);
-            // } else {
-            //     setError("An unexpected error occurred. Please try again.");
-            // }
             toast.error("Booking failed");
         } finally {
             setIsLoading(false);
