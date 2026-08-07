@@ -24,27 +24,10 @@ export type TechnicianProfileProps ={
     technician: ITechnician
 }
 
-export interface TechnicianProfileUpdateFormProps {
-    initialData: {
-        bio: string | null;
-        experience: number;
-        profilePhoto: string | null;
-        location: string | null;
-    };
-    onSubmit: (data: {
-        bio: string;
-        experience: number;
-        profilePhoto: string;
-        location: string;
-    }) => void;
-};
-
 
 export type BookingItemProps = {
     booking: IBooking
 };
-
-// id, serviceCategory, serviceName, date, status }: BookingItemProps
 
 export type PaymentItemProps = {
     id: string
@@ -326,59 +309,57 @@ export const PAYMENT_STATUS_COLORS: Record<PaymentStatus, string> = {
     'REFUNDED': 'bg-gray-500/15 text-gray-700 dark:text-gray-400',
 };
 
-// ==================== Dashboard Types ====================
-export interface IDashboardStats {
-    totalBookings: number;
-    pendingBookings: number;
-    acceptedBookings: number;
-    inProgressBookings: number;
-    completedBookings: number;
-    cancelledBookings: number;
-    totalSpent?: number;
-    totalEarnings?: number;
-    completionRate?: number;
+// ==================== Dashboard Types Admin ====================
+
+export interface BookingStats {
+  totalBookings: number;
+  pendingBookings: number;
+  acceptedBookings: number;
+  inProgressBookings: number;
+  completedBookings: number;
+  cancelledBookings: number;
+  totalSpent: number;
+  completionRate: number;
 }
 
-export interface IAdminStats {
-    totalUsers: number;
-    totalTechnicians: number;
-    totalCustomers: number;
-    totalBookings: number;
-    pendingBookings: number;
-    completedBookings: number;
-    totalRevenue: number;
+export interface ServiceItem {
+  id: string;
+  title: string;
+  description: string;
+  categoryId: string;
+  technicianId: string;
+  price: number;
 }
 
-// ==================== Dashboard Component Props ====================
-
-export interface DashboardStatsProps {
-    stats: IDashboardStats;
+export interface Category {
+  id: string;
+  type: string;
+  createdAt: string;
+  updatedAt: string;
+  services: ServiceItem[];
 }
 
-export interface BookingTableProps {
-    bookings: IBooking[];
-    onCancel?: (bookingId: string) => void;
-    onPay?: (bookingId: string) => void;
-    onReview?: (bookingId: string) => void;
+export interface UserItem {
+  id: string;
+  name: string;
+  email: string;
+  role: "ADMIN" | "USER" | "TECHNICIAN";
+  address?: string;
+  isBan: boolean;
+  createdAt: string;
 }
 
-export interface TechnicianBookingTableProps {
-    bookings: IBooking[];
-    onUpdateStatus: (bookingId: string, status: BookingStatus) => void;
+export interface UserListMeta {
+  page: number;
+  limit: number;
+  total: number;
 }
 
-export interface UserTableProps {
-    users: IUser[][];                                   
-    onUpdateStatus: (userId: string, isBan: boolean) => void;
+export interface ActionResponse<T = unknown> {
+  success: boolean;
+  message: string;
+  data?: T;
 }
 
-export interface CategoryTableProps {
-    categories: ICategory[];
-    onDelete?: (categoryId: string) => void;
-    onEdit?: (category: ICategory) => void;
-}
 
-export interface AvailabilityFormProps {
-    initialAvailabilities?: IAvailability[];
-    onSubmit: (availabilities: IAvailability[]) => void;
-}
+

@@ -6274,3 +6274,20 @@ My backend response
         }
     }
 }
+
+//  anu authenticated user can access, now add it to admin dashboard GET 26. localhost:5000/api/bookings/stats
+{
+    "success": true,
+    "statusCode": 200,
+    "message": "Booking statistics retrieved successfully",
+    "data": {
+        "totalBookings": 71,
+        "pendingBookings": 9,
+        "acceptedBookings": 21,
+        "inProgressBookings": 8,
+        "completedBookings": 13,
+        "cancelledBookings": 6,
+        "totalSpent": 79040,
+        "completionRate": 18
+    }
+}
