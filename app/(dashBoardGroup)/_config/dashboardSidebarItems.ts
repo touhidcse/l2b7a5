@@ -111,11 +111,11 @@ export const CUSTOMER_SIDEBAR_ITEMS: ISidebarItem[] = [
     //     href: "/customer-dashboard/update-profile",
     //     icon: UserPlus
     // },
-    // {
-    //     label: "Create Booking",
-    //     href: "/customer-dashboard/create-booking",
-    //     icon: PlusCircle
-    // },
+    {
+        label: "Create Booking",
+        href: "/services",
+        icon: PlusCircle
+    },
     // {
     //     label: "My Bookings",
     //     href: "/customer-dashboard/my-bookings",

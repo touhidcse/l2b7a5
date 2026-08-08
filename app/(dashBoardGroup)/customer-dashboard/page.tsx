@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useTransition, useCallback } from "react";
 import Link from "next/link";
-import { getCustomerBookings } from "@/service/booking";
+import { cancelBooking, getCustomerBookings } from "@/service/booking";
 import { BookingStatus, IBooking } from "@/lib/types";
 import { createPaymentSession } from "@/service/payment";
 import { toast } from "sonner";
@@ -74,33 +74,24 @@ const handlePayNow = async (bookingId: string) => {
 };
   
 
-  const handleCancelBooking = async (bookingId: string) => {
-    if (!confirm("Are you sure you want to cancel this booking?")) return;
+  const handleCancelBooking = (bookingId: string) => {
+  if (!confirm("Are you sure you want to cancel this booking?")) return;
 
-    startTransition(async () => {
-      try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/bookings/cancel/${bookingId}`,
-          {
-            method: "PATCH",
-            credentials: "include",
-          }
-        );
+  startTransition(async () => {
+    const res = await cancelBooking(bookingId);
 
-        if (!res.ok) throw new Error("Failed to cancel booking.");
-
-        setBookings((prev) =>
-          prev.map((b) =>
-            b.id === bookingId ? { ...b, status: "CANCELLED" } : b
-          )
-        );
-      } catch (err: unknown) {
-        const errorMessage =
-          err instanceof Error ? err.message : "Unable to cancel booking.";
-        alert(errorMessage);
-      }
-    });
-  };
+    if (res?.success) {
+      toast.success("Booking cancel");
+      setBookings((prev) =>
+        prev.map((b) =>
+          b.id === bookingId ? { ...b, status: "CANCELLED" } : b
+        )
+      );
+    } else {
+      toast.error("Cancellation faild");
+    }
+  });
+};
 
   const getStatusBadge = (status: BookingStatus) => {
     const styles: Record<BookingStatus, string> = {
@@ -165,9 +156,7 @@ const handlePayNow = async (bookingId: string) => {
             booking.status === "ACCEPTED" &&
             (!booking.payment || booking.payment.status === "PENDING");
 
-          const canCancel =
-            booking.status === "REQUESTED" || booking.status === "PAID";
-
+          const canCancel = booking.status === "REQUESTED" || booking.status === "PAID";
           const hasReview = Boolean(booking.review);
           const canReview = booking.status === "COMPLETED" && !hasReview;
 

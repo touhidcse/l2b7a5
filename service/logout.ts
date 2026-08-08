@@ -8,5 +8,5 @@ export const logout = async () => {
     cookieStore.delete("accessToken")
     cookieStore.delete("refreshToken")
 
-    // revalidateTag("profile","max")
+    revalidateTag("profile","max")
 }
