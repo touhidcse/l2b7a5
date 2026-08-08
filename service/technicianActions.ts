@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
-import { BookingStatus, IAvailability, IBooking } from "@/lib/types";
+import { BookingStatus, IAvailability, IAvailabilityResponse, IBooking } from "@/lib/types";
 
 export interface IApiResponse<T = unknown> {
   success: boolean;
@@ -19,6 +19,7 @@ const getAuthHeaders = async (): Promise<HeadersInit> => {
   };
 };
 
+
 export const updateTechnicianProfile = async (
   payload: { bio: string; experience: number; profilePhoto: string; location: string }
 ): Promise<IApiResponse> => {
@@ -30,13 +31,15 @@ export const updateTechnicianProfile = async (
   });
 
   const data = await res.json();
-  if (res.ok) revalidatePath("/technician");
+  if (res.ok) revalidatePath("/technician-dashboard");
   return {
     success: res.ok,
     message: data.message || (res.ok ? "Profile updated successfully" : "Failed to update profile"),
     data: data.data,
   };
 };
+
+// create availability
 
 export const saveTechnicianAvailability = async (
   availabilities: Array<{ day: string; startTime: string; endTime: string; isAvailable: boolean }>
@@ -49,13 +52,15 @@ export const saveTechnicianAvailability = async (
   });
 
   const data = await res.json();
-  if (res.ok) revalidatePath("/technician");
+  if (res.ok) revalidatePath("/technician-dashboard");
   return {
     success: res.ok,
     message: data.message || (res.ok ? "Availability saved" : "Failed to save availability"),
     data: data.data,
   };
 };
+
+
 
 export const getTechnicianBookings = async (): Promise<IApiResponse<IBooking[]>> => {
   const headers = await getAuthHeaders();
@@ -72,6 +77,8 @@ export const getTechnicianBookings = async (): Promise<IApiResponse<IBooking[]>>
     data: Array.isArray(data) ? data : data.data || [],
   };
 };
+
+
 
 export const updateBookingStatus = async (
   bookingId: string,
@@ -91,4 +98,33 @@ export const updateBookingStatus = async (
     message: data.message || (res.ok ? `Booking marked as ${status}` : "Status update failed"),
     data: data.data,
   };
+};
+
+
+
+// GET all available slot
+
+export const getTechnicianAvailability = async (): Promise<IAvailabilityResponse> => {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get("accessToken")?.value || null;
+
+  if (!accessToken) {
+    return {
+      success: false,
+      statusCode: 401,
+      message: "Please login to view availability slots",
+    };
+  }
+
+  const res = await fetch(`${process.env.BACKEND_API_URL}/api/technician/availability`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Cookie: `accessToken=${accessToken}`,
+    },
+    cache: "no-store",
+  });
+
+  const result: IAvailabilityResponse = await res.json();
+  return result;
 };

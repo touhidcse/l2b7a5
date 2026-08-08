@@ -45,7 +45,7 @@ export default function ProfileManagementForm({ initialData }: Props) {
   };
 
   return (
-    <div className="rounded-xl bg-white p-6 shadow-sm border border-slate-100">
+    <div className="rounded-xl bg-white p-6 shadow-sm border border-slate-100 w-full">
       <h3 className="mb-4 text-lg font-bold text-slate-800">Profile Management</h3>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>

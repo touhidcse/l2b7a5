@@ -35,6 +35,11 @@ export const ADMIN_SIDEBAR_ITEMS: ISidebarItem[] = [
         href: "/admin-dashboard",
         icon: LayoutDashboard
     },
+     {
+        label: "My Profile",
+        href: "/profile",
+        icon: UserPlus
+    },
     {
         label: "Create Category",
         href: "/admin-dashboard/create-category",
@@ -68,6 +73,11 @@ export const TECHNICIAN_SIDEBAR_ITEMS: ISidebarItem[] = [
         href: "/technician-dashboard",
         icon: LayoutDashboard
     },
+     {
+        label: "My Profile",
+        href: "/profile",
+        icon: UserPlus
+    },
     {
         label: "Update Profile",
         href: "/technician-dashboard/update-profile",
@@ -80,24 +90,24 @@ export const TECHNICIAN_SIDEBAR_ITEMS: ISidebarItem[] = [
     },
     {
         label: "My Availability",
-        href: "/technician-dashboard/my-availability",
+        href: "/technician-dashboard/availability",
         icon: Calendar
     },
-    {
-        label: "Update Availability",
-        href: "/technician-dashboard/update-availability",
-        icon: Edit
-    },
-    {
-        label: "My Bookings",
-        href: "/technician-dashboard/my-bookings",
-        icon: BookOpen
-    },
-    {
-        label: "Update Booking Status",
-        href: "/technician-dashboard/update-booking-status",
-        icon: RefreshCw
-    },
+    // {
+    //     label: "Update Availability",
+    //     href: "/technician-dashboard/update-availability",
+    //     icon: Edit
+    // },
+    // {
+    //     label: "My Bookings",
+    //     href: "/technician-dashboard/my-bookings",
+    //     icon: BookOpen
+    // },
+    // {
+    //     label: "Update Booking Status",
+    //     href: "/technician-dashboard/update-booking-status",
+    //     icon: RefreshCw
+    // },
 ];
 
 export const CUSTOMER_SIDEBAR_ITEMS: ISidebarItem[] = [
@@ -106,21 +116,22 @@ export const CUSTOMER_SIDEBAR_ITEMS: ISidebarItem[] = [
         href: "/customer-dashboard",
         icon: LayoutDashboard
     },
-    // {
-    //     label: "Update Profile",
-    //     href: "/customer-dashboard/update-profile",
-    //     icon: UserPlus
+    //  {
+    //     label: "My Bookings",
+    //     href: "/customer-dashboard",
+    //     icon: BookOpen
     // },
+    {
+        label: "My Profile",
+        href: "/profile",
+        icon: UserPlus
+    },
     {
         label: "Create Booking",
         href: "/services",
         icon: PlusCircle
     },
-    // {
-    //     label: "My Bookings",
-    //     href: "/customer-dashboard/my-bookings",
-    //     icon: BookOpen
-    // },
+   
     // {
     //     label: "Booking Details",
     //     href: "/customer-dashboard/booking-details",
@@ -141,11 +152,11 @@ export const CUSTOMER_SIDEBAR_ITEMS: ISidebarItem[] = [
     //     href: "/customer-dashboard/payment-details",
     //     icon: CreditCard
     // },
-    // {
-    //     label: "Payment History",
-    //     href: "/customer-dashboard/payment-history",
-    //     icon: DollarSign
-    // },
+    {
+        label: "Payment History",
+        href: "/customer-dashboard/payments",
+        icon: DollarSign
+    },
 ];
 
 export const sidebarMenuItems = {

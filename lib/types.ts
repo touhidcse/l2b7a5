@@ -365,5 +365,22 @@ export interface ActionResponse<T = unknown> {
   data?: T;
 }
 
+/////////////////////// Availability get
+export interface IAvailabilitySlot {
+  id: string;
+  technicianId: string;
+  day: string;
+  startTime: string;
+  endTime: string;
+  isAvailable: boolean;
+}
 
+export interface IAvailabilityResponse {
+  success: boolean;
+  statusCode: number;
+  message: string;
+  data?: {
+    technicianAvailabilities: IAvailabilitySlot[];
+  };
+}
 

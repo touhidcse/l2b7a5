@@ -45,10 +45,6 @@ export default async function TechnicianPage() {
 
       <BookingManagementTable initialBookings={bookings} />
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <ProfileManagementForm initialData={user.technicianProfile} />
-        <AvailabilityScheduler />
-      </div>
     </div>
   );
 }
