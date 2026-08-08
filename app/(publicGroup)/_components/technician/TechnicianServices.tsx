@@ -1,28 +1,30 @@
 import { TechnicianProfileProps } from "@/lib/types";
-import { Badge } from "lucide-react";
 
-export function TechnicianServices({ technician }: TechnicianProfileProps) {
-    return (
-        <div className="flex flex-wrap gap-2">
-            {
-                technician.services?.map(service => (
-                    <div key={service.id} className="space-y-2">
-                        <Badge>
-                            {service.category?.type}
-                        </Badge>
-                        <Badge>
-                            {service.title}
-                        </Badge>
-                        <Badge>
-                            {service.price}
-                        </Badge>
-                        <Badge>
-                            {service.id}
-                        </Badge>
+export function TechnicianServices({
+  technician,
+}: TechnicianProfileProps) {
+  return (
+    <div className="space-y-1">
+      {technician.services?.map((service) => (
+        <div
+          key={service.id}
+          className="flex items-center justify-between"
+        >
+          <div>
+            <p className="text-sm font-medium">
+              {service.title}
+            </p>
 
-                    </div>
-                ))
-            }
+            <p className="text-xs text-muted-foreground">
+              {service.category?.type}
+            </p>
+          </div>
+
+          <span className="text-sm font-semibold">
+            ৳{service.price.toLocaleString()}
+          </span>
         </div>
-    )
+      ))}
+    </div>
+  );
 }

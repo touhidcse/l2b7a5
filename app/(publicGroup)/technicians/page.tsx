@@ -1,155 +1,29 @@
-// import { BookOpen, CreditCard, Star } from "lucide-react";
-// import { ITechnician } from "@/lib/types";
-// import { ProfileHeader } from "../../_components/profile/profileHeader";
-// import { BookingItemFull, PaymentItem, ProfileSection, ReviewItem } from "../../_components/profile/profile-section";
-// import { getTechnicianProfileWithReviews } from "@/service/technician";
-
-// export default async function TechnicianProfilePage({
-//     params
-// }: {
-//     params: Promise<{ id: string }>
-// }) {
-
-//     const { id } = await params;
+import { Suspense } from "react";
+import { SharedSearchBar } from "../_components/shared/SharedSearchBar";
+import { TechnicianSkeleton } from "../_components/technician/TechnicianSkeleton";
+import { TechnicianList } from "../_components/technician/TechnicianList";
 
 
-//     // fetch technician
-//     const result = await getTechnicianProfileWithReviews(id);
-//     const technician = result.data as ITechnician
+export default async function TechnicansPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  return (
+    <div className="mx-auto max-w-7xl space-y-6 px-4 py-10 sm:px-6 lg:px-8">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-2xl font-semibold">Technicians</h1>
+          <p className="text-sm text-muted-foreground">
+            Browse our Prominent Technician.
+          </p>
+        </div>
+        <SharedSearchBar/>
+      </div>
 
-//     if (!result.success || !result.data) {
-//         return (
-//             <div className="text-center py-20">
-//                 Technician not found
-//             </div>
-//         )
-//     }
-
-//     const bookings = technician.bookings ?? [];
-
-
-//     // Total completed jobs
-//     const completedBookings = bookings.filter( booking => booking.status === "COMPLETED");
-
-
-//     // Total earning
-//     const totalEarning = completedBookings.reduce((sum, booking) => sum + (booking.price ?? 0),0);
-
-
-//     // Reviews received by technician
-//     const reviews = technician.reviews ?? [];
-
-
-//     // Total reviews
-//     const totalReviews = reviews.length;
-
-//     return (
-//         <main className="min-h-screen bg-slate-50 dark:bg-slate-950 py-8 sm:py-12">
-//             <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-
-//                 <ProfileHeader user={technician.user}/>
-
-//                 {/* Stats */}
-//                 <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
-//                     <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
-//                         <p className="text-sm text-slate-600 dark:text-slate-400">Total Bookings of {technician.user.name}</p>
-//                         <p className="text-3xl font-bold text-slate-900 dark:text-white">
-//                             {bookings.length}
-//                         </p>
-//                     </div>
-
-//                     <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
-//                         <p className="text-sm text-slate-600 dark:text-slate-400">Total Earnign</p>
-//                         <p className="text-3xl font-bold text-slate-900 dark:text-white">
-//                             ${totalEarning.toFixed(2)}
-//                         </p>
-//                     </div>
-
-//                     <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
-//                         <p className="text-sm text-slate-600 dark:text-slate-400">Total Reviews</p>
-//                         <p className="text-3xl font-bold text-slate-900 dark:text-white">
-//                             {totalReviews}
-//                         </p>
-//                     </div>
-//                 </div>
-
-//                 {/* Bookings & Payments Section */}
-//                 <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
-//                     {/* Bookings Section */}
-//                     <ProfileSection
-//                         title="Bookings"
-//                         icon={<BookOpen className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />}
-//                         count={bookings.length}
-//                         isEmpty={bookings.length === 0}
-//                     >
-//                         <div className="space-y-2">
-//                             {bookings.map((booking) => (
-//                                 <BookingItemFull key={booking.id} booking={booking} />
-//                             ))}
-//                         </div>
-//                     </ProfileSection>
-
-//                     {/* Earning Section */}
-//                     <ProfileSection
-//                         title="Earnigs"
-//                         icon={<CreditCard className="w-5 h-5 text-green-600 dark:text-green-400" />}
-//                         count={bookings.length}
-//                         isEmpty={bookings.length === 0}
-//                     >
-//                         {/* <div className="space-y-2">
-//                             {payments.map((payment) => (
-//                                 <PaymentItem
-//                                     key={payment.id}
-//                                     id={payment.id}
-//                                     price={payment.price}
-//                                     date={payment.paidAt ?? ""}
-//                                     method={payment.method}
-//                                 />
-//                             ))}
-//                         </div> */}
-//                         <div>
-//                             {
-//                                 completedBookings.map((booking)=>(
-//                                 <div key={booking.id}>
-//                                     <p>
-//                                         {booking.service?.title}
-//                                     </p>
-
-//                                     <p>
-//                                           ${booking.price}
-//                                     </p>
-
-//                                     <p>{new Date( booking.bookingDate).toLocaleDateString()}</p>
-//                         </div>
-//                         )) }
-                            
-//                         </div>
-//                     </ProfileSection>
-//                 </div>
-
-//                 {/* Reviews Section */}
-//                 <div className="mt-6">
-//                     <ProfileSection
-//                         title="Reviews"
-//                         icon={<Star className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />}
-//                         count={reviews.length}
-//                         isEmpty={reviews.length === 0}
-//                     >
-//                         <div className="space-y-2">
-//                             {reviews.map((review) => (
-//                                 <ReviewItem
-//                                     key={review.id}
-//                                     id={review.id}
-//                                     rating={review.rating}
-//                                     date={review.reviewDate}
-//                                     comment={review.comment}
-//                                 />
-//                             ))}
-//                         </div>
-//                     </ProfileSection>
-//                 </div>
-
-//             </div>
-//         </main>
-//     );
-// }
+      <Suspense fallback={<TechnicianSkeleton />}>
+        <TechnicianList searchParams={searchParams}/>
+      </Suspense>
+    </div>
+  );
+};

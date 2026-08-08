@@ -144,7 +144,11 @@ export type IService = {
 
     price: number;
 
-    category: ICategory;
+    // category: ICategory;
+    category?: {
+            id: string;
+            type: string;
+        };
 
     technician: ITechnician;
     bookings: IBooking[];
