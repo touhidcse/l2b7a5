@@ -22,7 +22,6 @@ import { getMe } from '@/service/getMe'
 // Navigation items configuration
 const navItems = [
     { label: 'Home', href: '/' },
-    { label: 'About', href: '/about' },
     { label: 'Services', href: '/services' },
     { label: 'Technicians', href: '/technicians' },
     { label: 'Registration', href: '/registration' },

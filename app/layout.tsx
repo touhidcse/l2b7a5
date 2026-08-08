@@ -1,6 +1,7 @@
 import { Toaster } from "sonner";
 import "./globals.css";
 import { getMe } from "@/service/getMe";
+import Footer from "@/components/shared/footer";
 
 
 export default async function RootLayout({
@@ -21,6 +22,7 @@ export default async function RootLayout({
         {children}
         {/* footer */}
          <Toaster position="top-right" richColors />
+         <Footer/>
         </body>
     </html>
   );
