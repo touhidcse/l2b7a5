@@ -5,7 +5,7 @@ import { Calendar, Clock, AlertCircle, CheckCircle2, Info } from "lucide-react";
 import { IService, IAvailability } from "@/lib/types";
 import { createBooking } from "@/service/booking";
 import { toast } from "sonner";
-// import toast from "react-hot-toast";
+
 
 
 interface BookingSectionProps {

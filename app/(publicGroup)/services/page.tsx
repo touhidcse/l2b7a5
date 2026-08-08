@@ -1,7 +1,8 @@
 import { Suspense } from "react";
 import { ServiceList } from "../_components/services/ServiceList";
 import { ServiceSkeleton } from "../_components/services/ServiceSkeloton";
-import { ServiceSearchBar } from "../_components/services/ServiceSearchBar";
+import { SharedSearchBar } from "../_components/shared/SharedSearchBar";
+
 
 export default async function ServicesPage({
   searchParams,
@@ -17,7 +18,7 @@ export default async function ServicesPage({
             Browse the inclusiv services.
           </p>
         </div>
-        <ServiceSearchBar/>
+        <SharedSearchBar/>
       </div>
 
       <Suspense fallback={<ServiceSkeleton />}>

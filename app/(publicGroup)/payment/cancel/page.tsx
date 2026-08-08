@@ -15,7 +15,7 @@ export default function PaymentCancelPage() {
           href="/customer-dashboard/"
           className="mt-6 inline-block rounded-lg bg-slate-800 px-6 py-2.5 text-sm font-semibold text-white shadow hover:bg-slate-900 transition-colors"
         >
-          Back to Bookings
+          Back to Dashboard
         </Link>
       </div>
     </div>

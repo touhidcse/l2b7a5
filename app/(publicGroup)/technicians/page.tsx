@@ -1,102 +1,155 @@
-// import { Suspense } from 'react';
-// import { TechnicianCard } from '../_components/technicians/TechnicianCard';
-// import { TechnicianFilters } from '../_components/technicians/TechnicianFilters';
-// import { TechnicianGridSkeleton } from '../_components/technicians/TechnicianSkeleton';
+// import { BookOpen, CreditCard, Star } from "lucide-react";
+// import { ITechnician } from "@/lib/types";
+// import { ProfileHeader } from "../../_components/profile/profileHeader";
+// import { BookingItemFull, PaymentItem, ProfileSection, ReviewItem } from "../../_components/profile/profile-section";
+// import { getTechnicianProfileWithReviews } from "@/service/technician";
 
-// async function getTechnicians(filters: any) {
-//     const params = new URLSearchParams();
-//     if (filters?.search) params.append('search', filters.search);
-//     if (filters?.category) params.append('category', filters.category);
-//     if (filters?.location) params.append('location', filters.location);
-//     if (filters?.minRating) params.append('minRating', String(filters.minRating));
-//     if (filters?.page) params.append('page', String(filters.page));
-//     if (filters?.limit) params.append('limit', String(filters.limit));
+// export default async function TechnicianProfilePage({
+//     params
+// }: {
+//     params: Promise<{ id: string }>
+// }) {
 
-//     const baseUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL || 'http://localhost:5000';
-//     const response = await fetch(`${baseUrl}/api/technicians?${params.toString()}`, {
-//         cache: 'no-store',
-//         headers: {
-//             'Content-Type': 'application/json',
-//         },
-//     });
+//     const { id } = await params;
 
-//     if (!response.ok) {
-//         throw new Error('Failed to fetch technicians');
+
+//     // fetch technician
+//     const result = await getTechnicianProfileWithReviews(id);
+//     const technician = result.data as ITechnician
+
+//     if (!result.success || !result.data) {
+//         return (
+//             <div className="text-center py-20">
+//                 Technician not found
+//             </div>
+//         )
 //     }
 
-//     return response.json();
-// }
+//     const bookings = technician.bookings ?? [];
 
-// async function TechnicianList({ searchParams }: { searchParams: any }) {
-//     const params = await searchParams;
-//     const result = await getTechnicians({
-//         search: params?.search,
-//         category: params?.category,
-//         location: params?.location,
-//         minRating: params?.minRating ? Number(params.minRating) : undefined,
-//         page: params?.page ? Number(params.page) : 1,
-//         limit: 10,
-//     });
 
-//     const technicians = result?.data || [];
-//     const meta = result?.meta;
+//     // Total completed jobs
+//     const completedBookings = bookings.filter( booking => booking.status === "COMPLETED");
 
-//     return (
-//         <div className="space-y-4">
-//             {technicians.length === 0 ? (
-//                 <div className="text-center py-12">
-//                     <h3 className="text-lg font-medium text-slate-900 dark:text-white">No technicians found</h3>
-//                     <p className="text-slate-500 dark:text-slate-400 mt-1">Try adjusting your filters</p>
-//                 </div>
-//             ) : (
-//                 technicians.map((technician: any) => (
-//                     <TechnicianCard key={technician.id} technician={technician} />
-//                 ))
-//             )}
-//         </div>
-//     );
-// }
 
-// export default async function TechniciansPage({ searchParams }: { searchParams: any }) {
-//     const params = await searchParams;
+//     // Total earning
+//     const totalEarning = completedBookings.reduce((sum, booking) => sum + (booking.price ?? 0),0);
 
-//     // Get categories for filter
-//     const baseUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL || 'http://localhost:5000';
-//     const categoriesResponse = await fetch(`${baseUrl}/api/categories`, {
-//         cache: 'no-store',
-//     });
-//     const categoriesData = await categoriesResponse.json();
-//     const categories = categoriesData?.data?.allCategory?.map((c: any) => c.type) || [];
-//     const locations = ['Dhaka', 'Chittagong', 'Rajshahi', 'Khulna', 'Sylhet', 'Barishal', 'Rangpur', 'Mymensingh', 'Comilla'];
+
+//     // Reviews received by technician
+//     const reviews = technician.reviews ?? [];
+
+
+//     // Total reviews
+//     const totalReviews = reviews.length;
 
 //     return (
-//         <div className="container mx-auto px-4 py-8">
-//             <div className="mb-8">
-//                 <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Find Technicians</h1>
-//                 <p className="text-slate-500 dark:text-slate-400 mt-1">
-//                     Browse and book verified home service professionals
-//                 </p>
-//             </div>
+//         <main className="min-h-screen bg-slate-50 dark:bg-slate-950 py-8 sm:py-12">
+//             <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
 
-//             <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-//                 <div className="lg:col-span-1">
-//                     <TechnicianFilters
-//                         onFilterChange={(filters) => {
-//                             // Client-side navigation would go here
-//                             console.log('Filters changed:', filters);
-//                         }}
-//                         initialFilters={params}
-//                         categories={categories}
-//                         locations={locations}
-//                     />
+//                 <ProfileHeader user={technician.user}/>
+
+//                 {/* Stats */}
+//                 <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
+//                     <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+//                         <p className="text-sm text-slate-600 dark:text-slate-400">Total Bookings of {technician.user.name}</p>
+//                         <p className="text-3xl font-bold text-slate-900 dark:text-white">
+//                             {bookings.length}
+//                         </p>
+//                     </div>
+
+//                     <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+//                         <p className="text-sm text-slate-600 dark:text-slate-400">Total Earnign</p>
+//                         <p className="text-3xl font-bold text-slate-900 dark:text-white">
+//                             ${totalEarning.toFixed(2)}
+//                         </p>
+//                     </div>
+
+//                     <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+//                         <p className="text-sm text-slate-600 dark:text-slate-400">Total Reviews</p>
+//                         <p className="text-3xl font-bold text-slate-900 dark:text-white">
+//                             {totalReviews}
+//                         </p>
+//                     </div>
 //                 </div>
 
-//                 <div className="lg:col-span-3">
-//                     <Suspense fallback={<TechnicianGridSkeleton />}>
-//                         <TechnicianList searchParams={searchParams} />
-//                     </Suspense>
+//                 {/* Bookings & Payments Section */}
+//                 <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
+//                     {/* Bookings Section */}
+//                     <ProfileSection
+//                         title="Bookings"
+//                         icon={<BookOpen className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />}
+//                         count={bookings.length}
+//                         isEmpty={bookings.length === 0}
+//                     >
+//                         <div className="space-y-2">
+//                             {bookings.map((booking) => (
+//                                 <BookingItemFull key={booking.id} booking={booking} />
+//                             ))}
+//                         </div>
+//                     </ProfileSection>
+
+//                     {/* Earning Section */}
+//                     <ProfileSection
+//                         title="Earnigs"
+//                         icon={<CreditCard className="w-5 h-5 text-green-600 dark:text-green-400" />}
+//                         count={bookings.length}
+//                         isEmpty={bookings.length === 0}
+//                     >
+//                         {/* <div className="space-y-2">
+//                             {payments.map((payment) => (
+//                                 <PaymentItem
+//                                     key={payment.id}
+//                                     id={payment.id}
+//                                     price={payment.price}
+//                                     date={payment.paidAt ?? ""}
+//                                     method={payment.method}
+//                                 />
+//                             ))}
+//                         </div> */}
+//                         <div>
+//                             {
+//                                 completedBookings.map((booking)=>(
+//                                 <div key={booking.id}>
+//                                     <p>
+//                                         {booking.service?.title}
+//                                     </p>
+
+//                                     <p>
+//                                           ${booking.price}
+//                                     </p>
+
+//                                     <p>{new Date( booking.bookingDate).toLocaleDateString()}</p>
+//                         </div>
+//                         )) }
+                            
+//                         </div>
+//                     </ProfileSection>
 //                 </div>
+
+//                 {/* Reviews Section */}
+//                 <div className="mt-6">
+//                     <ProfileSection
+//                         title="Reviews"
+//                         icon={<Star className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />}
+//                         count={reviews.length}
+//                         isEmpty={reviews.length === 0}
+//                     >
+//                         <div className="space-y-2">
+//                             {reviews.map((review) => (
+//                                 <ReviewItem
+//                                     key={review.id}
+//                                     id={review.id}
+//                                     rating={review.rating}
+//                                     date={review.reviewDate}
+//                                     comment={review.comment}
+//                                 />
+//                             ))}
+//                         </div>
+//                     </ProfileSection>
+//                 </div>
+
 //             </div>
-//         </div>
+//         </main>
 //     );
 // }

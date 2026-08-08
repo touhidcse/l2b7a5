@@ -2,7 +2,8 @@
 import { IService } from "@/lib/types";
 import { getServices } from "../../_actions/getService";
 import { ServiceCard } from "./ServiceCard";
-import ServicePagination from "./ServicePagination";
+import SharedPagination from "../shared/SharedPagination";
+
 
 
 export async function ServiceList({
@@ -32,7 +33,7 @@ export async function ServiceList({
                 ))}
             </div>
 
-            <ServicePagination
+            <SharedPagination
                 currentPage={meta.page}
                 totalPages={meta.totalPages}
             />
