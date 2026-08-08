@@ -1,10 +1,11 @@
 import { BookOpen, CreditCard, Star } from "lucide-react";
 import { ITechnician } from "@/lib/types";
-import { ProfileHeader } from "../../_components/profile/profileHeader";
-import { BookingItemFull, PaymentItem, ProfileSection, ReviewItem } from "../../_components/profile/profile-section";
+
 import { getTechnicianProfileWithReviews } from "@/service/technician";
 import BookingSection from "../../_components/booking/BookingSection";
 import { TechnicianAbout } from "../../_components/technician/TechnicianAbout";
+import { ProfileHeader } from "@/app/(dashBoardGroup)/_components/shared/profileHeader";
+import { BookingItemFull, ProfileSection, ReviewItem } from "@/app/(dashBoardGroup)/_components/shared/profile-section";
 
 export default async function TechnicianProfilePage({
     params

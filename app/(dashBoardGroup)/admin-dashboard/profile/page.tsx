@@ -1,13 +1,8 @@
 import { BookOpen, CreditCard, Star } from "lucide-react";
-import { ProfileHeader } from "../_components/profile/profileHeader";
-import {
-    BookingItemFull,  // ✅ Use BookingItemFull instead of BookingItem
-    PaymentItem,
-    ProfileSection,
-    ReviewItem,
-} from "../_components/profile/profile-section";
 import { getMe } from "@/service/getMe";
 import { IUser } from "@/lib/types";
+import { ProfileHeader } from "../../_components/shared/profileHeader";
+import { BookingItemFull, PaymentItem, ProfileSection, ReviewItem } from "../../_components/shared/profile-section";
 
 export default async function Page() {
     const result = await getMe();
@@ -31,8 +26,6 @@ export default async function Page() {
     return (
         <main className="min-h-screen bg-slate-50 dark:bg-slate-950 py-8 sm:py-12">
             <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-
-                <ProfileHeader user={user} />
 
                 {/* Stats */}
                 <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">

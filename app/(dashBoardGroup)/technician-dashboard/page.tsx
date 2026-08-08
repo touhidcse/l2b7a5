@@ -1,11 +1,9 @@
 import React from "react";
-import { ProfileHeader } from "@/app/(publicGroup)/_components/profile/profileHeader";
 import { getMe } from "@/service/getMe";
 import { IUser } from "@/lib/types";
 import { getTechnicianBookings } from "@/service/technicianActions";
 import BookingManagementTable from "../_components/technician/BookingManagementTable";
-import ProfileManagementForm from "../_components/technician/ProfileManagementForm";
-import AvailabilityScheduler from "../_components/technician/AvailabilityScheduler";
+import { ProfileHeader } from "../_components/shared/profileHeader";
 
 
 export default async function TechnicianPage() {
@@ -25,7 +23,6 @@ export default async function TechnicianPage() {
 
   return (
     <div className="space-y-6 p-6">
-      <ProfileHeader user={user} />
 
       {/* Metrics Row */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">

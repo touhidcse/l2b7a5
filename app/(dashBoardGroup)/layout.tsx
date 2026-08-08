@@ -5,6 +5,7 @@ import { getMe } from '@/service/getMe';
 import React from 'react'
 import DashboardSidebar from './_components/DashboardSidebar';
 import { IUser } from '@/lib/types';
+import { ProfileHeader } from './_components/shared/profileHeader';
 const DashboardLayout = async (
   {
     children
@@ -17,6 +18,7 @@ const DashboardLayout = async (
 
     <div className="min-h-screen flex flex-col">
       <Navbar user={user} />
+     
       <SidebarProvider>
         <div className="flex flex-1">
           <DashboardSidebar user={user} />

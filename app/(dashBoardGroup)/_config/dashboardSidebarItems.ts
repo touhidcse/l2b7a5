@@ -37,7 +37,7 @@ export const ADMIN_SIDEBAR_ITEMS: ISidebarItem[] = [
     },
      {
         label: "My Profile",
-        href: "/profile",
+        href: "/admin-dashboard/profile",
         icon: UserPlus
     },
     {
@@ -75,7 +75,7 @@ export const TECHNICIAN_SIDEBAR_ITEMS: ISidebarItem[] = [
     },
      {
         label: "My Profile",
-        href: "/profile",
+        href: "/technician-dashboard/profile",
         icon: UserPlus
     },
     {
@@ -123,7 +123,7 @@ export const CUSTOMER_SIDEBAR_ITEMS: ISidebarItem[] = [
     // },
     {
         label: "My Profile",
-        href: "/profile",
+        href: "/customer-dashboard/profile",
         icon: UserPlus
     },
     {

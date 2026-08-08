@@ -3,16 +3,17 @@
 import { useEffect, useState, useTransition, useCallback } from "react";
 import Link from "next/link";
 import { cancelBooking, getCustomerBookings } from "@/service/booking";
-import { BookingStatus, IBooking } from "@/lib/types";
+import { BookingStatus, IBooking, IUser } from "@/lib/types";
 import { createPaymentSession } from "@/service/payment";
 import { toast } from "sonner";
-import { ProfileHeader } from "@/app/(publicGroup)/_components/profile/profileHeader";
+import { ProfileHeader } from "../_components/shared/profileHeader";
+import { getMe } from "@/service/getMe";
 
 
 
-export default  function BookingHistoryPage() {
 
-
+export default function BookingHistoryPage() {
+ 
   const [bookings, setBookings] = useState<IBooking[]>([]);
   // Default to true so no synchronous setLoading(true) is needed during initial mount
   const [loading, setLoading] = useState(true);
@@ -42,7 +43,7 @@ export default  function BookingHistoryPage() {
     }
   }, []);
 
-  // Fetch on mount safely
+  // // Fetch on mount safely
   useEffect(() => {
     let ignore = false;
 
@@ -56,6 +57,10 @@ export default  function BookingHistoryPage() {
       ignore = true;
     };
   }, [fetchBookings]);
+
+
+ 
+  
 
   // Retry handler (safe to update loading state here because it's triggered by a user event)
   const handleRetry = () => {
@@ -146,6 +151,7 @@ export default  function BookingHistoryPage() {
   return (
     <div className="space-y-6 p-6">
       {/* <ProfileHeader user={user} /> */}
+      {/* {user && <ProfileHeader user={user} />} */}
       <div className="space-y-4">
         <h2 className="text-xl font-bold text-slate-800">Your Bookings</h2>
 

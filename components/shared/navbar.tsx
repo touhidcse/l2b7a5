@@ -56,8 +56,18 @@ export function Navbar({ user }: NavbarProps) {
         }
         if (action === "profile") {
             await getMe();
-            router.push("/profile");
-            return;
+            // router.push("/profile");
+            // return;
+            if (user.role ==="ADMIN"){
+                router.push("/admin-dashboard/profile");
+                return;
+            }else if(user.role ==="CUSTOMER"){
+                 router.push("/customer-dashboard/profile");
+                return;
+            } else if (user.role ==="TECHNICIAN"){
+                router.push("/technician-dashboard/profile");
+                return;
+            }
         }
     };
 
