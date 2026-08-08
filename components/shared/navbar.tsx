@@ -19,7 +19,6 @@ import { logout } from '@/service/logout'
 import { getMe } from '@/service/getMe'
 
 
-// Navigation items configuration
 const navItems = [
     { label: 'Home', href: '/' },
     { label: 'Services', href: '/services' },
@@ -32,17 +31,12 @@ const navItems = [
 const userMenuItems = [
     { label: 'Dashboard', icon: LayoutDashboard, action: 'dashboard' },
     { label: 'Profile', icon: User, action: 'profile' },
-    // { label: 'Settings', icon: Settings, action: 'settings' },
 ]
 
 export function Navbar({ user }: NavbarProps) {
-
-    console.log(user, "User Success from Navbar Top");
     const router = useRouter()
 
     const handleUserMenuAction = async (action: string) => {
-        console.log(`User clicked: ${action}`)
-        // Add your action logic here
         if (action === "dashboard") {
             if (user?.role === "CUSTOMER") {
                 router.push("/customer-dashboard")
@@ -61,8 +55,7 @@ export function Navbar({ user }: NavbarProps) {
             return;
         }
         if (action === "profile") {
-            const user = await getMe();
-            console.log(user,"From navbar profile");
+            await getMe();
             router.push("/profile");
             return;
         }
@@ -83,7 +76,7 @@ export function Navbar({ user }: NavbarProps) {
                             <Link
                                 key={item.href}
                                 href={item.href}
-                                className="px-3 py-2 text-sm font-medium text-foreground rounded-md hover:bg-accent transition-colors"
+                                className="px-3 py-2 text-sm font-medium text-foreground rounded-md hover:bg-primary/10 hover:text-primary transition-colors"
                             >
                                 {item.label}
                             </Link>
@@ -91,52 +84,54 @@ export function Navbar({ user }: NavbarProps) {
                     </div>
 
                     {/* User Dropdown */}
-                    {
-                        user.role? (
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                    <div className='cursor-pointer'>
-                                        <User className="w-4 h-4 mr-2" />
-                                        {/* Account */}
+                    {user?.role ? (
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <div className="cursor-pointer flex items-center p-2 rounded-md hover:bg-primary/10 hover:text-primary transition-colors">
+                                    <User className="w-4 h-4 mr-2" />
+                                    <span className="text-sm font-medium">{user?.name || "Account"}</span>
+                                </div>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="w-48">
+                                <DropdownMenuLabel className="px-2 py-1.5">
+                                    <div className="flex flex-col gap-1">
+                                        <p className="text-sm font-medium">{user?.name || "Name"}</p>
+                                        <p className="text-xs text-muted-foreground">{user?.email || "Email"}</p>
                                     </div>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end" className="w-48">
-                                    <DropdownMenuLabel>
-                                        <div className='flex flex-col gap 1'>
-                                            <p className='text-sm font-medium'>{user?.name || "Name"}</p>
-                                            <p className='text-xs text-muted-foreground'>{user?.email || "Email"}</p>
-                                        </div>
-                                    </DropdownMenuLabel>
-                                    <DropdownMenuGroup>
-                                        {userMenuItems.map((item) => {
-                                            const Icon = item.icon
-                                            return (
-                                                <DropdownMenuItem
-                                                    key={item.action}
-                                                    onClick={async () => await handleUserMenuAction(item.action)}
-                                                >
-                                                    <Icon className="w-4 h-4 mr-2" />
-                                                    <span>{item.label}</span>
-                                                </DropdownMenuItem>
-                                            )
-                                        })}
-                                    </DropdownMenuGroup>
-                                    <DropdownMenuSeparator />
-                                    <DropdownMenuItem
-                                        onClick={async () => {
-                                            await handleUserMenuAction('logout');
-                                        }}
-                                        className="text-destructive focus:text-destructive"
-                                    >
-                                        <LogOut className="w-4 h-4 mr-2" />
-                                        <span>Logout</span>
-                                    </DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-                        ) : <Link href={"/login"}>
-                            <button className='cursor-pointer'>Login</button>
+                                </DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuGroup>
+                                    {userMenuItems.map((item) => {
+                                        const Icon = item.icon
+                                        return (
+                                            <DropdownMenuItem
+                                                key={item.action}
+                                                onClick={async () => await handleUserMenuAction(item.action)}
+                                                className="cursor-pointer hover:bg-primary/10 hover:text-primary"
+                                            >
+                                                <Icon className="w-4 h-4 mr-2" />
+                                                <span>{item.label}</span>
+                                            </DropdownMenuItem>
+                                        )
+                                    })}
+                                </DropdownMenuGroup>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem
+                                    onClick={async () => {
+                                        await handleUserMenuAction('logout');
+                                    }}
+                                    className="text-destructive focus:text-destructive cursor-pointer"
+                                >
+                                    <LogOut className="w-4 h-4 mr-2" />
+                                    <span>Logout</span>
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    ) : (
+                        <Link href="/login">
+                            <Button size="sm">Login</Button>
                         </Link>
-                    }
+                    )}
 
                     {/* Mobile menu button */}
                     <Button variant="ghost" size="sm" className="md:hidden">
