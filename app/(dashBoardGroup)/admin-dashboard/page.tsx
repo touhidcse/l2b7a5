@@ -12,22 +12,19 @@ interface PageProps {
   }>;
 }
 
-export default async function AdminDashboardPage({ searchParams }: PageProps) {
-  const resolvedSearchParams = await searchParams;
-  const searchTerm = resolvedSearchParams?.searchTerm || "";
-  const page = Number(resolvedSearchParams?.page) || 1;
+export default async function AdminDashboardPage() {
+ 
 
   // Parallel server fetches for optimal page loading speed
-  const [statsRes, categoriesRes, usersRes] = await Promise.all([
+  const [statsRes, categoriesRes] = await Promise.all([
     getBookingStats(),
     getAdminCategories(),
-    getUsers(searchTerm, page, 10),
+
   ]);
 
   const stats = statsRes.data;
   const categories = categoriesRes.data || [];
-  const users = usersRes.data?.users || [];
-  const meta = usersRes.data?.meta || { page: 1, limit: 10, total: 0 };
+ 
 
   return (
     <div className="space-y-8 p-6">
@@ -62,30 +59,6 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* 3. User Management Section with Search & Pagination */}
-      <section className="space-y-4">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h2 className="text-xl font-bold text-slate-800">User Management</h2>
-            <p className="text-xs text-slate-500">
-              Search by name, role, address, or status.
-            </p>
-          </div>
-
-          <div className="w-full sm:w-72">
-            <SharedSearchBar />
-          </div>
-        </div>
-
-        {/* User Data Table */}
-        <UserManagementTable users={users} />
-
-        {/* Reusable Pagination */}
-        <div className="mt-4 flex justify-end">
-          <SharedPagination totalPages={Math.ceil(meta.total / meta.limit)} currentPage={meta.page} />
         </div>
       </section>
     </div>

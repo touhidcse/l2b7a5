@@ -40,31 +40,31 @@ export const ADMIN_SIDEBAR_ITEMS: ISidebarItem[] = [
         href: "/admin-dashboard/profile",
         icon: UserPlus
     },
+    // {
+    //     label: "Create Category",
+    //     href: "/admin-dashboard/create-category",
+    //     icon: PlusCircle
+    // },
+    // {
+    //     label: "All Categories",
+    //     href: "/admin-dashboard/all-categories",
+    //     icon: List
+    // },
     {
-        label: "Create Category",
-        href: "/admin-dashboard/create-category",
-        icon: PlusCircle
-    },
-    {
-        label: "All Categories",
-        href: "/admin-dashboard/all-categories",
-        icon: List
-    },
-    {
-        label: "All Users",
-        href: "/admin-dashboard/all-users",
+        label: "Users",
+        href: "/admin-dashboard/users",
         icon: Users
     },
-    {
-        label: "Update User Status",
-        href: "/admin-dashboard/update-user-status",
-        icon: RefreshCw
-    },
-    {
-        label: "All Bookings",
-        href: "/admin-dashboard/all-bookings",
-        icon: BookOpen
-    },
+    // {
+    //     label: "Update User Status",
+    //     href: "/admin-dashboard/update-user-status",
+    //     icon: RefreshCw
+    // },
+    // {
+    //     label: "All Bookings",
+    //     href: "/admin-dashboard/all-bookings",
+    //     icon: BookOpen
+    // },
 ];
 
 export const TECHNICIAN_SIDEBAR_ITEMS: ISidebarItem[] = [

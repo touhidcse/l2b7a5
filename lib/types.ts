@@ -357,6 +357,7 @@ export interface UserListMeta {
   page: number;
   limit: number;
   total: number;
+  totalPage: number;
 }
 
 export interface ActionResponse<T = unknown> {

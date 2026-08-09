@@ -73,37 +73,63 @@ export async function createCategory(
 }
 
 // 4. Fetch Users with Search & Pagination
-export async function getUsers(
-  searchTerm: string = "",
-  page: number = 1,
-  limit: number = 10
-): Promise<ActionResponse<{ users: UserItem[]; meta: UserListMeta }>> {
+export async function getUsers({
+  query,
+}: {
+  query?: {
+    searchTerm?: string;
+    page?: string;
+    limit?: string;
+  };
+}): Promise<
+  ActionResponse<{
+    users: UserItem[];
+    meta: UserListMeta;
+  }>
+> {
   const headers = await getAuthHeaders();
-  const params = new URLSearchParams({
-    searchTerm,
-    page: String(page),
-    limit: String(limit),
-  });
 
-  const res = await fetch(`${process.env.BACKEND_API_URL}/api/admin/users?${params.toString()}`, {
-    headers,
-    cache: "no-store",
-  });
+  const params = new URLSearchParams();
+
+  if (query?.searchTerm) {
+    params.set("searchTerm", query.searchTerm);
+  }
+
+  params.set("page", query?.page || "1");
+  params.set("limit", query?.limit || "10");
+
+  const res = await fetch(
+    `${process.env.BACKEND_API_URL}/api/admin/users?${params.toString()}`,
+    {
+      headers,
+      cache: "no-store",
+    }
+  );
 
   if (!res.ok) {
-    return { success: false, message: "Failed to fetch users" };
+    return {
+      success: false,
+      message: "Failed to fetch users",
+    };
   }
 
   const json = await res.json();
+
   return {
     success: json.success,
     message: json.message,
     data: {
-      users: json.data?.users || [],
-      meta: json.data?.meta || { page, limit, total: 0 },
+      users: json.data?.users || json.data || [],
+      meta: json.meta || json.data?.meta || {
+        page: Number(query?.page || 1),
+        limit: Number(query?.limit || 10),
+        total: 0,
+        totalPage: 1,
+      },
     },
   };
 }
+
 
 // 5. Ban / Unban User
 export async function toggleUserBanStatus(
