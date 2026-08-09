@@ -3,17 +3,23 @@
 
 | Next.js Route | Component/Feature | Backend API Consumption |
 |---------------|-------------------|-------------------------|
-| `/` | Home page with featured services | `GET /api/services` |
-| `/services` | Browse & filter services/technicians | `GET /api/services`, `GET /api/technicians`, `GET /api/categories` |
-| `/technicians/[id]` | Technician profile & booking CTA | `GET /api/technicians/:id` |
-| `/auth/register` | Role selection & registration form | `POST /api/auth/register` |
-| `/auth/login` | Login form | `POST /api/auth/login` |
-| `/dashboard/customer` | Customer overview & booking history | `GET /api/bookings`, `GET /api/payments` |
-| `/dashboard/customer/bookings/[id]/pay` | Payment initiation page | `POST /api/payments/create` |
-| `/payment/success` & `/payment/cancel` | Payment outcome pages | (Updates UI based on URL params/session) |
-| `/dashboard/technician` | Technician overview & availability | `GET /api/technician/profile`, `GET /api/technician/availability` |
-| `/dashboard/technician/bookings` | Manage incoming bookings | `GET /api/technician/bookings`, `PATCH /api/technician/bookings/:id` |
-| `/dashboard/admin` | Admin overview & user management | `GET /api/admin/users`, `GET /api/admin/bookings` |
-| `/dashboard/admin/categories` | Manage service categories | `GET /api/admin/categories`, `POST /api/admin/categories` |
+| `/` | Home page with top rated 9  services | `GET /api/services` |
+| `/services` | Public Browse & filter services/technicians | `GET /api/services` |
+| `/technicians` | Public Browse & filter technicians |  `GET /api/technicians` |
+| `/technicians/[id]` | Technician profile & booking CTA | `GET /api/technicians/[id]` |
+| `/registration` | Role selection & registration form | `POST /api/users/register` |
+| `/login` | Login form | `POST /api/auth/login` |
+| `/customer-dashboard/` | Customer overview & booking history, cancel bookings, pay for booking, leave review | `GET /api/bookings`,`/api/bookings/cancel/:id`,`api/payments/create`,`POST /api/reviews/[id]` |
+|`/payment/success` & `/payment/cancel` | Payment outcome pages | `GET /payment/success`, `GET /payment/cancel` |
+| `/customer-dashboard/payments/` | Customer Payment history | `GET /api/payments` |
+| `/technicians/[id]/service/[id]` | Create Booking | `POST /api/bookings` |
+| 
+| `/technician-dashboard` | Technician overview , all bookimgs, Manage incoming bookings | `GET /api/technician/bookings/`, `PATCH api/technician/bookings/:id` |
+| `technician-dashboard/profile` | Technician profile with bio, skill, services,review | `GET api/users/me` |
+| `technician-dashboard/update-profile` | Update technician profile (bio, experience,location, profilePhpta) | `PUT api/technician/profile` |
+| `/technician-dashboard/create-availability` | Create Technician availability by selecting day and time frmae | `POST api/technician/availability` |
+| `technician-dashboard/availability | Get Technician availability | `GET /api/technician/availability` |
+| `admin-dashboard` | Admin overview & Manage service categories | `GET api/bookings/stats `, `GET /api/admin/categories` |
+| `admin-dashboard` | user management | `GET /api/admin/users `, `PATCH /api/admin/users/[id]` |
 
 ---
