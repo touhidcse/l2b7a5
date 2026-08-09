@@ -89,18 +89,6 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL('/not-found', request.url))
   }
 
-  // Premium Content Protection
-
-
-//   if (pathname === "/premium") {
-//     const subscriptionStatus = await getSubscriptionStatus();
-//     const isActive = Boolean(
-//       subscriptionStatus?.success && subscriptionStatus.data?.isSubscribed,
-//     );
-//     if (!isActive) {
-//       return NextResponse.redirect(new URL('/payment', request.url))
-//     }
-//   }
   return NextResponse.next()
 }
 
