@@ -29,11 +29,12 @@ export const updateTechnicianProfile = async (
     method: "PUT",
     headers,
     body: JSON.stringify(payload),
-    cache: "force-cache",
-    next: {
-      revalidate: 60 * 60 * 24,
-      tags: ["update-profile"]
-    }
+    cache:"no-store"
+    // cache: "force-cache",
+    // next: {
+    //   revalidate: 60 * 60 * 24,
+    //   tags: ["update-profile"]
+    // }
   });
 
   const data = await res.json();
@@ -55,11 +56,12 @@ export const saveTechnicianAvailability = async (
     method: "POST",
     headers,
     body: JSON.stringify({ availabilities }),
-    cache: "force-cache",
-    next: {
-      revalidate: 60 * 60 * 24,
-      tags: ["create-availability"]
-    }
+    cache:"no-store"
+    // cache: "force-cache",
+    // next: {
+    //   revalidate: 60 * 60 * 24,
+    //   tags: ["create-availability"]
+    // }
   });
 
   const data = await res.json();
@@ -78,11 +80,12 @@ export const getTechnicianBookings = async (): Promise<IApiResponse<IBooking[]>>
   const res = await fetch(`${process.env.BACKEND_API_URL}/api/technician/bookings/`, {
     method: "GET",
     headers,
-    cache: "force-cache",
-    next: {
-      revalidate: 60 * 60 * 24,
-      tags: ["technician-dashboard"]
-    }
+    cache:"no-store"
+    // cache: "force-cache",
+    // next: {
+    //   revalidate: 60 * 60 * 24,
+    //   tags: ["technician-dashboard"]
+    // }
   });
 
   const data = await res.json();
@@ -104,6 +107,7 @@ export const updateBookingStatus = async (
     method: "PATCH",
     headers,
     body: JSON.stringify({ status }),
+    cache:"no-store"
   });
 
   const data = await res.json();

@@ -20,11 +20,12 @@ export async function getBookingStats(): Promise<ActionResponse<BookingStats>> {
   const headers = await getAuthHeaders();
   const res = await fetch(`${process.env.BACKEND_API_URL}/api/bookings/stats`, {
     headers,
-    cache: "force-cache",
-    next: {
-      revalidate: 60 * 60 * 24,
-      tags: ["admin-dashboard"]
-    }
+    cache:"no-store"
+    // cache: "force-cache",
+    // next: {
+    //   revalidate: 60 * 60 * 24,
+    //   tags: ["admin-dashboard"]
+    // }
   });
 
   if (!res.ok) {
@@ -40,11 +41,12 @@ export async function getAdminCategories(): Promise<ActionResponse<Category[]>> 
   const headers = await getAuthHeaders();
   const res = await fetch(`${process.env.BACKEND_API_URL}/api/admin/categories`, {
     headers,
-    cache: "force-cache",
-    next: {
-      revalidate: 60 * 60 * 24,
-      tags: ["admin-dashboard"]
-    }
+    cache:"no-store"
+    // cache: "force-cache",
+    // next: {
+    //   revalidate: 60 * 60 * 24,
+    //   tags: ["admin-dashboard"]
+    // }
   });
 
   if (!res.ok) {
@@ -68,11 +70,12 @@ export async function createCategory(
     method: "POST",
     headers,
     body: JSON.stringify(payload),
-    cache: "force-cache",
-    next: {
-      revalidate: 60 * 60 * 24,
-      tags: ["admin-dashboard"]
-    }
+    cache:"no-store"
+    // cache: "force-cache",
+    // next: {
+    //   revalidate: 60 * 60 * 24,
+    //   tags: ["admin-dashboard"]
+    // }
   });
 
   const json = await res.json();
@@ -124,11 +127,12 @@ export async function getUsers({ query, }: {
     `${process.env.BACKEND_API_URL}/api/admin/users?${params.toString()}`,
     {
       headers,
-      cache: "force-cache",
-      next: {
-        revalidate: 60 * 60 * 24,
-        tags: ["admin-dashboard/users"]
-      }
+      cache:"no-store"
+      // cache: "force-cache",
+      // next: {
+      //   revalidate: 60 * 60 * 24,
+      //   tags: ["admin-dashboard/users"]
+      // }
     }
   );
 
@@ -167,11 +171,12 @@ export async function toggleUserBanStatus(
     method: "PATCH",
     headers,
     body: JSON.stringify({ isBan: !isBan }),
-    cache: "force-cache",
-        next:{
-            revalidate: 60*60*24,
-            tags: ["admin-dashboard/users"]
-        }
+    cache:"no-store"
+    // cache: "force-cache",
+    //     next:{
+    //         revalidate: 60*60*24,
+    //         tags: ["admin-dashboard/users"]
+    //     }
   });
 
   const json = await res.json();

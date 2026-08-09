@@ -12,8 +12,9 @@ export function ProfileHeader(
     return <p>User not found</p>
   }
   return (
-    <Card className="p-6 sm:p-8 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-900 dark:to-slate-800 border-0">
-      <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center justify-between">
+    // <Card className="w-full min-w-0 overflow-hidden">
+    <Card className="w-full min-w-0 overflow-hidden p-6 sm:p-8 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-900 dark:to-slate-800 border-0">
+      <div className="flex min-w-0 flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex-1">
           <div className="flex items-center gap-3 mb-2">
             <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white">
@@ -71,8 +72,8 @@ export function ProfileHeader(
         <div className="flex items-center gap-3">
           <Shield
             className={`w-12 h-12 sm:w-16 sm:h-16 ${user.isBan
-                ? 'text-red-500 dark:text-red-400'
-                : 'text-green-500 dark:text-green-400'
+              ? 'text-red-500 dark:text-red-400'
+              : 'text-green-500 dark:text-green-400'
               }`}
           />
         </div>

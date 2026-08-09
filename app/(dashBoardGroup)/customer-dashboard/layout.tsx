@@ -20,7 +20,7 @@ const CustomerDashboardLayout = async ({
           <ProfileHeader user={user} />
 
           {/* All dashboard pages come below ProfileHeader */}
-          <main className="p-6">
+          <main className="p-3 sm:p-6 min-w-0">
             {children}
           </main>
 

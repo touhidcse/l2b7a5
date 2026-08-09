@@ -317,11 +317,14 @@ export const PAYMENT_STATUS_COLORS: Record<PaymentStatus, string> = {
 
 export interface BookingStats {
   totalBookings: number;
-  pendingBookings: number;
+  requestedBookings: number;
   acceptedBookings: number;
   inProgressBookings: number;
   completedBookings: number;
   cancelledBookings: number;
+  declinedBookings : number;
+  paidBookings: number;
+  activeBookings: number;
   totalSpent: number;
   completionRate: number;
 }

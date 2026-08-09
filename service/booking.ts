@@ -42,11 +42,12 @@ export const createBooking = async ({
                 startAt,
                 endAt,
             }),
-            cache: "force-cache",
-            next: {
-                revalidate: 60 * 60 * 24,
-                tags: ["customer-dashboard"]
-            }
+            cache:"no-store"
+            // cache: "force-cache",
+            // next: {
+            //     revalidate: 60 * 60 * 24,
+            //     tags: ["customer-dashboard"]
+            // }
         }
     );
 
@@ -79,11 +80,12 @@ export const cancelBooking = async (bookingId: string) => {
                 Cookie: `accessToken=${accessToken}`,
             },
             body: JSON.stringify({ bookingId }),
-            cache: "force-cache",
-            next: {
-                revalidate: 60 * 60 * 24,
-                tags: ["customer-dashboard"]
-            }
+            cache:"no-store"
+            // cache: "force-cache",
+            // next: {
+            //     revalidate: 60 * 60 * 24,
+            //     tags: ["customer-dashboard"]
+            // }
         }
     );
 
@@ -113,11 +115,12 @@ export const getCustomerBookings = async () => {
             headers: {
                 Cookie: `accessToken=${accessToken}`
             },
-            cache: "force-cache",
-            next: {
-                revalidate: 60 * 60 * 24,
-                tags: ["customer-dashboard"]
-            }
+            cache:"no-store"
+            // cache: "force-cache",
+            // next: {
+            //     revalidate: 60 * 60 * 24,
+            //     tags: ["customer-dashboard"]
+            // }
         }
     );
 

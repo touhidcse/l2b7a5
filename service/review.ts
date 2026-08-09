@@ -39,19 +39,16 @@ export const LeaveReview = async ({
                 rating,
                 comment
             }),
-            cache: "force-cache",
-            next: {
-                revalidate: 60 * 60 * 24,
-                tags: ["customer-dashboard"]
-            }
+            cache:"no-store"
+            // cache: "force-cache",
+            // next: {
+            //     revalidate: 60 * 60 * 24,
+            //     tags: ["customer-dashboard"]
+            // }
         }
     );
 
     const result = await res.json();
-
-    console.log("Booking API Response:", result);
-    console.log(res.status);
-    console.log(res.ok);
 
     return result;
 };

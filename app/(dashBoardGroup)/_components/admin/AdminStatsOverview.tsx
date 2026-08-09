@@ -25,8 +25,8 @@ export default function AdminStatsOverview({ stats }: Props) {
       </div>
 
       <div className="rounded-xl border border-slate-100 bg-white p-5 shadow-sm">
-        <p className="text-xs font-semibold uppercase text-slate-500">Active / Pending</p>
-        <h4 className="mt-2 text-2xl font-bold text-amber-500">{stats.pendingBookings}</h4>
+        <p className="text-xs font-semibold uppercase text-slate-500">Active</p>
+        <h4 className="mt-2 text-2xl font-bold text-amber-500">{stats.activeBookings}</h4>
       </div>
     </div>
   );
