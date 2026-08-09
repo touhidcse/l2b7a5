@@ -46,7 +46,7 @@ export default function ReviewSubmissionPage() {
 
         try {  
             const result = await LeaveReview(data)
-            console.log(result , "from review page");
+            
             if (!result.ok) throw new Error(result.message || "Failed to submit review.");
 
             toast.success("Review Given Successfully. Thank you for your feedback")

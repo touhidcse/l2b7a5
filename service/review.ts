@@ -1,5 +1,6 @@
 
 "use server"
+import { redirect } from 'next/navigation'
 import { cookies } from "next/headers"
 
 interface LeaveReviewPayload {
@@ -39,7 +40,7 @@ export const LeaveReview = async ({
                 rating,
                 comment
             }),
-            cache:"no-store"
+            cache: "no-store"
             // cache: "force-cache",
             // next: {
             //     revalidate: 60 * 60 * 24,
@@ -49,6 +50,8 @@ export const LeaveReview = async ({
     );
 
     const result = await res.json();
-
+    if (res) {
+        redirect('/customer-dashboard')
+    }
     return result;
 };
