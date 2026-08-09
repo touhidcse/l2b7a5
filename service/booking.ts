@@ -42,12 +42,15 @@ export const createBooking = async ({
                 startAt,
                 endAt,
             }),
+            cache: "force-cache",
+            next: {
+                revalidate: 60 * 60 * 24,
+                tags: ["customer-dashboard"]
+            }
         }
     );
 
     const result = await res.json();
-
-    console.log("Booking API Response:", result);
 
     return result;
 };
@@ -75,13 +78,17 @@ export const cancelBooking = async (bookingId: string) => {
                 "Content-Type": "application/json",
                 Cookie: `accessToken=${accessToken}`,
             },
-            body: JSON.stringify({bookingId}),
+            body: JSON.stringify({ bookingId }),
+            cache: "force-cache",
+            next: {
+                revalidate: 60 * 60 * 24,
+                tags: ["customer-dashboard"]
+            }
         }
     );
 
     const result = await res.json();
 
-    console.log("Cancel Booking API Response:", result);
 
     return result;
 };
@@ -106,14 +113,16 @@ export const getCustomerBookings = async () => {
             headers: {
                 Cookie: `accessToken=${accessToken}`
             },
-            cache: "no-store"
+            cache: "force-cache",
+            next: {
+                revalidate: 60 * 60 * 24,
+                tags: ["customer-dashboard"]
+            }
         }
     );
 
 
     const result = await res.json();
-
-    console.log("Booking API GetcustomerBooking from booking.ts:", result);
 
     return result;
 

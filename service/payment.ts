@@ -1,8 +1,9 @@
 "use server"
 
-
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+
+// Create Stripe Payment session
 
 export const createPaymentSession = async (bookingId: string) => {
   const cookieStore = await cookies();
@@ -40,6 +41,7 @@ export const createPaymentSession = async (bookingId: string) => {
   return result;
 };
 
+// get user payment history
 
 export const getPaymentHistory = async () => {
     const cookieStore = await cookies();
@@ -66,10 +68,6 @@ export const getPaymentHistory = async () => {
 
 
     const result = await res.json();
-
-    console.log("Booking API:", result);
-    // or
-    console.log("Result data 0", JSON.stringify(result.data[0], null, 2));
 
     return result;
 

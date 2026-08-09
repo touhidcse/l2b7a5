@@ -20,7 +20,11 @@ export async function getBookingStats(): Promise<ActionResponse<BookingStats>> {
   const headers = await getAuthHeaders();
   const res = await fetch(`${process.env.BACKEND_API_URL}/api/bookings/stats`, {
     headers,
-    cache: "no-store",
+    cache: "force-cache",
+    next: {
+      revalidate: 60 * 60 * 24,
+      tags: ["admin-dashboard"]
+    }
   });
 
   if (!res.ok) {
@@ -36,7 +40,11 @@ export async function getAdminCategories(): Promise<ActionResponse<Category[]>> 
   const headers = await getAuthHeaders();
   const res = await fetch(`${process.env.BACKEND_API_URL}/api/admin/categories`, {
     headers,
-    next: { tags: ["categories"] },
+    cache: "force-cache",
+    next: {
+      revalidate: 60 * 60 * 24,
+      tags: ["admin-dashboard"]
+    }
   });
 
   if (!res.ok) {
@@ -60,6 +68,11 @@ export async function createCategory(
     method: "POST",
     headers,
     body: JSON.stringify(payload),
+    cache: "force-cache",
+    next: {
+      revalidate: 60 * 60 * 24,
+      tags: ["admin-dashboard"]
+    }
   });
 
   const json = await res.json();
@@ -111,7 +124,11 @@ export async function getUsers({ query, }: {
     `${process.env.BACKEND_API_URL}/api/admin/users?${params.toString()}`,
     {
       headers,
-      cache: "no-store",
+      cache: "force-cache",
+      next: {
+        revalidate: 60 * 60 * 24,
+        tags: ["admin-dashboard/users"]
+      }
     }
   );
 
@@ -150,6 +167,11 @@ export async function toggleUserBanStatus(
     method: "PATCH",
     headers,
     body: JSON.stringify({ isBan: !isBan }),
+    cache: "force-cache",
+        next:{
+            revalidate: 60*60*24,
+            tags: ["admin-dashboard/users"]
+        }
   });
 
   const json = await res.json();
@@ -161,7 +183,7 @@ export async function toggleUserBanStatus(
     };
   }
 
-  revalidatePath("/admin-dashboard");
+  revalidatePath("/admin-dashboard/users");
   return {
     success: true,
     message: isBan ? "User unbanned successfully" : "User banned successfully",

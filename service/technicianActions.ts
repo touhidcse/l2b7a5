@@ -19,6 +19,7 @@ const getAuthHeaders = async (): Promise<HeadersInit> => {
   };
 };
 
+///   1. update Technician Profile
 
 export const updateTechnicianProfile = async (
   payload: { bio: string; experience: number; profilePhoto: string; location: string }
@@ -28,10 +29,15 @@ export const updateTechnicianProfile = async (
     method: "PUT",
     headers,
     body: JSON.stringify(payload),
+    cache: "force-cache",
+    next: {
+      revalidate: 60 * 60 * 24,
+      tags: ["update-profile"]
+    }
   });
 
   const data = await res.json();
-  if (res.ok) revalidatePath("/technician-dashboard");
+  if (res.ok) revalidatePath("/technician-dashboard/update-profile");
   return {
     success: res.ok,
     message: data.message || (res.ok ? "Profile updated successfully" : "Failed to update profile"),
@@ -39,7 +45,7 @@ export const updateTechnicianProfile = async (
   };
 };
 
-// create availability
+////  2. create availability
 
 export const saveTechnicianAvailability = async (
   availabilities: Array<{ day: string; startTime: string; endTime: string; isAvailable: boolean }>
@@ -49,10 +55,15 @@ export const saveTechnicianAvailability = async (
     method: "POST",
     headers,
     body: JSON.stringify({ availabilities }),
+    cache: "force-cache",
+    next: {
+      revalidate: 60 * 60 * 24,
+      tags: ["create-availability"]
+    }
   });
 
   const data = await res.json();
-  if (res.ok) revalidatePath("/technician-dashboard");
+  if (res.ok) revalidatePath("/technician-dashboard/create-availability");
   return {
     success: res.ok,
     message: data.message || (res.ok ? "Availability saved" : "Failed to save availability"),
@@ -67,7 +78,11 @@ export const getTechnicianBookings = async (): Promise<IApiResponse<IBooking[]>>
   const res = await fetch(`${process.env.BACKEND_API_URL}/api/technician/bookings/`, {
     method: "GET",
     headers,
-    cache: "no-store",
+    cache: "force-cache",
+    next: {
+      revalidate: 60 * 60 * 24,
+      tags: ["technician-dashboard"]
+    }
   });
 
   const data = await res.json();

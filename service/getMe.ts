@@ -22,17 +22,11 @@ export const getMe = async ()=>{
             Cookie: `accessToken=${accessToken}`
         },
         cache: "no-store"
-
-        // cache: "force-cache",
-        // next:{
-        //     revalidate: 60*60*24,
-        //     tags: ["profile"]
-        // }
     })
 
     const result = await res.json()
     console.log("Result from getMe:", result);
     return result.data as IUser;
-    // return result;
+    
   
 }
