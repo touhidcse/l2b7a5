@@ -73,11 +73,12 @@ export async function createCategory(
 }
 
 // 4. Fetch Users with Search & Pagination
-export async function getUsers({
-  query,
-}: {
+
+export async function getUsers({ query, }: {
   query?: {
     searchTerm?: string;
+    role?: string;
+    isBan?: string;
     page?: string;
     limit?: string;
   };
@@ -93,6 +94,14 @@ export async function getUsers({
 
   if (query?.searchTerm) {
     params.set("searchTerm", query.searchTerm);
+  }
+
+  if (query?.role && query.role !== "all") {
+    params.set("role", query.role);
+  }
+
+  if (query?.isBan && query.isBan !== "all") {
+    params.set("isBan", query.isBan);
   }
 
   params.set("page", query?.page || "1");
@@ -130,17 +139,17 @@ export async function getUsers({
   };
 }
 
-
 // 5. Ban / Unban User
 export async function toggleUserBanStatus(
   userId: string,
   isBan: boolean
 ): Promise<ActionResponse> {
   const headers = await getAuthHeaders();
-  const endpoint = isBan ? "unban" : "ban";
-  const res = await fetch(`${process.env.BACKEND_API_URL}/api/admin/users/${userId}/${endpoint}`, {
+  // const endpoint = isBan ? "unban" : "ban";
+  const res = await fetch(`${process.env.BACKEND_API_URL}/api/admin/users/${userId}`, {
     method: "PATCH",
     headers,
+    body: JSON.stringify({ isBan: !isBan }),
   });
 
   const json = await res.json();

@@ -39,7 +39,7 @@ export default async function AdminDashboardUsersPage({
             </h2>
 
             <p className="text-xs text-slate-500">
-              Search by name, role, address, or status.
+              Search by name or address.
             </p>
           </div>
 
