@@ -1,57 +1,53 @@
 
-"use server"
-import { redirect } from 'next/navigation'
-import { cookies } from "next/headers"
+"use server";
+
+import { cookies } from "next/headers";
 
 interface LeaveReviewPayload {
-    bookingId: string;
-    rating: number;
-    comment: string;
+  bookingId: string;
+  rating: number;
+  comment: string;
 }
 
 export const LeaveReview = async ({
-    bookingId,
-    rating,
-    comment
+  bookingId,
+  rating,
+  comment,
 }: LeaveReviewPayload) => {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get("accessToken")?.value || null;
 
-    const cookieStore = await cookies()
+  if (!accessToken) {
+    return {
+      success: false,
+      message: "Please log in to leave a review!",
+    };
+  }
 
-    const accessToken = cookieStore.get("accessToken")?.value || null;
-
-    if (!accessToken) {
-        return {
-            success: false,
-            message: "Pls, login to book this service!",
-        }
-
-    }
-
+  try {
     const res = await fetch(
-        `${process.env.BACKEND_API_URL}/api/reviews/${bookingId}`,
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Cookie: `accessToken=${accessToken}`,
-            },
-            body: JSON.stringify({
-                bookingId,
-                rating,
-                comment
-            }),
-            cache: "no-store"
-            // cache: "force-cache",
-            // next: {
-            //     revalidate: 60 * 60 * 24,
-            //     tags: ["customer-dashboard"]
-            // }
-        }
+      `${process.env.BACKEND_API_URL}/api/reviews/${bookingId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: `accessToken=${accessToken}`,
+        },
+        body: JSON.stringify({
+          bookingId,
+          rating,
+          comment,
+        }),
+        cache: "no-store",
+      }
     );
 
     const result = await res.json();
-    if (res) {
-        redirect('/customer-dashboard')
-    }
     return result;
+  } catch (error) {
+    return {
+      success: false,
+      message: "Failed to connect to the server.",
+    };
+  }
 };
